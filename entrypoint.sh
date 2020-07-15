@@ -18,7 +18,7 @@ echo "$pull_request_output" > pull_request_infracost.txt
 pull_request_monthly_cost=$(echo $pull_request_output | awk '/OVERALL TOTAL/ { print $NF }')
 echo "::set-output name=pull_request_monthly_cost::$pull_request_monthly_cost"
 
-absolute_percent_diff=$(bc <<<"scale=4; $master_monthly_cost / $pull_request_monthly_cost * 100 - 100" | tr -d -)
+absolute_percent_diff=$(echo "scale=4; $master_monthly_cost / $pull_request_monthly_cost * 100 - 100" | bc | tr -d -)
 
 if (( $(echo "$absolute_percent_diff >= $percentage_threshold" | bc -l) )); then
   jq -Mnc --arg diff "$(git diff --no-color --no-index master_infracost.txt pull_request_infracost.txt | tail -n +3)" '{body: "Master branch monthly cost estimate $master_monthly_cost\nPull request monthly cost estimate $pull_request_monthly_cost\n<details><summary>Infracost diff</summary>\n\n```diff\n\($diff)\n```\n</details>\n"}' | \
