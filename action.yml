@@ -1,4 +1,9 @@
-name: Run infracost diff
+name: Run infracost
+description: Show cost estimate changes from Terraform in pull requests 
+author: infracost
+branding:
+  icon: trending-up
+  color: red
 inputs:
   terraform_dir:
     description: Path of the repo's terraform directory
