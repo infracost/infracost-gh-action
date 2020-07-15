@@ -18,4 +18,6 @@ if [ $master_monthly_cost -eq $pull_request_monthly_cost]; then
     -H "Content-Type: application/json" \
     -H "Authorization: token $GITHUB_TOKEN" \
     "https://api.github.com/repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/comments"
+else
+  echo "GitHub comment not posted as master branch and pull_request have the same cost estimate."
 fi
