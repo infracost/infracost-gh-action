@@ -24,7 +24,7 @@ if [ $(echo "$absolute_percent_diff >= $percentage_threshold" | bc -l) == 1 ]; t
   jq -Mnc --arg diff "$(git diff --no-color --no-index master_infracost.txt pull_request_infracost.txt | tail -n +3)" \
           --arg master_monthly_cost $master_monthly_cost \
           --arg pull_request_monthly_cost $pull_request_monthly_cost \
-          '{body: "Master branch monthly cost estimate \($master_monthly_cost)\nPull request monthly cost estimate \($pull_request_monthly_cost)\n<details><summary>Infracost diff</summary>\n\n```diff\n\($diff)\n```\n</details>\n"}' | \
+          '{body: "Master branch monthly cost estimate: $\($master_monthly_cost)\nPull request monthly cost estimate: $\($pull_request_monthly_cost)\n<details><summary>Infracost diff</summary>\n\n```diff\n\($diff)\n```\n</details>\n"}' | \
           curl -sL -X POST -d @- \
             -H "Content-Type: application/json" \
             -H "Authorization: token $GITHUB_TOKEN" \
