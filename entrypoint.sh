@@ -18,19 +18,24 @@ echo "$pull_request_output" > pull_request_infracost.txt
 pull_request_monthly_cost=$(echo $pull_request_output | awk '/OVERALL TOTAL/ { print $NF }')
 echo "::set-output name=pull_request_monthly_cost::$pull_request_monthly_cost"
 
-percent_diff=$(echo "scale=4; $master_monthly_cost / $pull_request_monthly_cost * 100 - 100" | bc | tr -d -)
+percent_diff=$(echo "scale=2; $master_monthly_cost / $pull_request_monthly_cost * 100 - 100" | bc)
 absolute_percent_diff=$(echo $percent_diff | tr -d -)
 
 if [ $(echo "$absolute_percent_diff >= $percentage_threshold" | bc -l) == 1 ]; then
-  echo "Posting GitHub comment: diff ($absolute_percent_diff) >= percentage threshold ($percentage_threshold)"
+  change_word="increase"
+  if [ $(echo "$percent_diff < 0" | bc -l) == 1 ]; then
+    change_word="decrease"
+  fi
+  echo "Posting GitHub comment as master branch and pull request diff ($absolute_percent_diff) is more than the percentage threshold ($percentage_threshold)."
   jq -Mnc --arg diff "$(git diff --no-color --no-index master_infracost.txt pull_request_infracost.txt | tail -n +3)" \
           --arg master_monthly_cost $master_monthly_cost \
           --arg pull_request_monthly_cost $pull_request_monthly_cost \
-          '{body: "Master branch monthly cost estimate: $\($master_monthly_cost)\nPull request monthly cost estimate: $\($pull_request_monthly_cost) (\($percent_diff)%)\n<details><summary>Infracost diff</summary>\n\n```diff\n\($diff)\n```\n</details>\n"}' | \
+          --arg absolute_percent_diff $absolute_percent_diff \
+          '{body: "Monthly cost estimate can \($change) by \($absolute_percent_diff)% (master branch $\($master_monthly_cost) vs pull request $\($pull_request_monthly_cost))\n<details><summary>Infracost diff</summary>\n\n```diff\n\($diff)\n```\n</details>\n"}' | \
           curl -sL -X POST -d @- \
             -H "Content-Type: application/json" \
             -H "Authorization: token $GITHUB_TOKEN" \
             "https://api.github.com/repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/comments" > /dev/null
 else
-  echo "GitHub comment not posted as master branch and pull_request diff ($absolute_percent_diff) was less than the percentage threshold ($percentage_threshold)."
+  echo "GitHub comment not posted as master branch and pull request diff ($absolute_percent_diff) is less than the percentage threshold ($percentage_threshold)."
 fi
