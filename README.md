@@ -2,7 +2,7 @@
 
 This action runs [infracost](https://github.com/aliscott/infracost) on the provided terraform directory. It can be used to automatically add a PR comment showing the cost estimate `diff` between a pull request and the master branch whenever a `.tf` file changes.
 
-<img src="../../../examples/diff_screenshot.png" width=557 alt="Example screenshot" />
+<img src="diff_screenshot.png" width=557 alt="Example screenshot" />
 
 ## Inputs
 
