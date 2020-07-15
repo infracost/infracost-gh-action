@@ -18,7 +18,7 @@ echo "$pull_request_output" > pull_request_infracost.txt
 pull_request_monthly_cost=$(echo $pull_request_output | awk '/OVERALL TOTAL/ { print $NF }')
 echo "::set-output name=pull_request_monthly_cost::$pull_request_monthly_cost"
 
-percent_diff=$(echo "scale=2; $master_monthly_cost / $pull_request_monthly_cost * 100 - 100" | bc)
+percent_diff=$(echo "scale=4; $pull_request_monthly_cost / $master_monthly_cost  * 100 - 100" | bc)
 absolute_percent_diff=$(echo $percent_diff | tr -d -)
 
 if [ $(echo "$absolute_percent_diff >= $percentage_threshold" | bc -l) == 1 ]; then
@@ -28,7 +28,7 @@ if [ $(echo "$absolute_percent_diff >= $percentage_threshold" | bc -l) == 1 ]; t
   fi
   echo "Posting GitHub comment as master branch and pull request diff ($absolute_percent_diff) is more than the percentage threshold ($percentage_threshold)."
   jq -Mnc --arg change_word $change_word \
-          --arg absolute_percent_diff $absolute_percent_diff \
+          --arg absolute_percent_diff $(printf '%.1f\n' $absolute_percent_diff) \
           --arg master_monthly_cost $master_monthly_cost \
           --arg pull_request_monthly_cost $pull_request_monthly_cost \
           --arg diff "$(git diff --no-color --no-index master_infracost.txt pull_request_infracost.txt | tail -n +3)" \
