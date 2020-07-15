@@ -1,5 +1,7 @@
 #!/bin/sh -l
 
+echo $TERRAFORM_DIR
+
 master_output=$(infracost --no-color --tfdir /github/workspace/master/$TERRAFORM_DIR)
 echo "$master_output"
 echo "$master_output" > master_infracost.txt
