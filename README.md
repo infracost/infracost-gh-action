@@ -64,12 +64,12 @@ jobs:
         path: pull_request
     - name: Run infracost on master branch
       id: master_infracost
-      uses: aliscott/infracost/.github/actions/infracost@master
+      uses: aliscott/infracost-gh-action@master
       with:
         file_prefix: master
     - name: Run infracost on pull request branch
       id: pull_request_infracost
-      uses: aliscott/infracost/.github/actions/infracost@master
+      uses: aliscott/infracost-gh-action@master
       with:
         file_prefix: pull_request
     - name: Add pull request comment with infracost diff
