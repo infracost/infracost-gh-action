@@ -1,13 +1,20 @@
-name: 'Run infracost'
+name: Run infracost
+description: Show cost estimate changes from Terraform in pull requests 
+author: infracost
+branding:
+  icon: trending-up
+  color: red
 inputs:
-  file_prefix:
-    description: 'The file prefix used to save the infracost output'
+  terraform_dir:
+    description: Path of the repo's terraform directory
     required: true
-outputs:
-  monthly_cost:
-    description: 'The monthly cost estimate'
+  percentage_threshold:
+    description: The absolute percentage threshold that triggers a pull request comment with the diff. Defaults to 0, meaning that a comment is posted if the cost estimate changes. For example, set to 5 to post a comment if the cost estimate changes by plus or minus 5%.
+    required: false
+    default: 0
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.file_prefix }}
+    - ${{ inputs.terraform_dir }}
+    - ${{ inputs.percentage_threshold }}

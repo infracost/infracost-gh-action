@@ -6,7 +6,7 @@ ENV TERRAFORM_VERSION=0.12.28 \
   TERRAFORM_BINARY=terraform \
   INFRACOST_VERSION=latest
 
-RUN apk --update --no-cache add ca-certificates openssl sudo curl && \
+RUN apk --update --no-cache add ca-certificates openssl sudo curl git jq && \
   wget -O terraform.zip "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip" && \
   unzip terraform.zip -d /bin && \
   rm -rf terraform.zip /var/cache/apk/*
