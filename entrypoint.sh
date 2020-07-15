@@ -21,11 +21,14 @@ echo "::set-output name=pull_request_monthly_cost::$pull_request_monthly_cost"
 absolute_percent_diff=$(echo "scale=4; $master_monthly_cost / $pull_request_monthly_cost * 100 - 100" | bc | tr -d -)
 
 if [ $(echo "$absolute_percent_diff >= $percentage_threshold" | bc -l) == 1 ]; then
-  jq -Mnc --arg diff "$(git diff --no-color --no-index master_infracost.txt pull_request_infracost.txt | tail -n +3)" '{body: "Master branch monthly cost estimate \($master_monthly_cost)\nPull request monthly cost estimate \($pull_request_monthly_cost)\n<details><summary>Infracost diff</summary>\n\n```diff\n\($diff)\n```\n</details>\n"}' | \
-  curl -sL -X POST -d @- \
-    -H "Content-Type: application/json" \
-    -H "Authorization: token $GITHUB_TOKEN" \
-    "https://api.github.com/repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/comments"
+  jq -Mnc --arg diff "$(git diff --no-color --no-index master_infracost.txt pull_request_infracost.txt | tail -n +3)" \
+          --arg master_monthly_cost $master_monthly_cost \
+          --arg pull_request_monthly_cost $pull_request_monthly_cost \
+          '{body: "Master branch monthly cost estimate \($master_monthly_cost)\nPull request monthly cost estimate \($pull_request_monthly_cost)\n<details><summary>Infracost diff</summary>\n\n```diff\n\($diff)\n```\n</details>\n"}' | \
+          curl -sL -X POST -d @- \
+            -H "Content-Type: application/json" \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/comments"
 else
   echo "GitHub comment not posted as master branch and pull_request diff ($absolute_percent_diff) was less than the percentage threshold ($percentage_threshold)."
 fi
