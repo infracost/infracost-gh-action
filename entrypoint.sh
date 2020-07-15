@@ -1,5 +1,8 @@
 #!/bin/sh -l
 
+echo $GITHUB_REPOSITORY
+echo $GITHUB_SHA
+
 output=$(infracost --no-color --tfdir /github/workspace/$1/$TERRAFORM_DIR)
 echo "$output"
 echo "$output" > $1-infracost.txt
