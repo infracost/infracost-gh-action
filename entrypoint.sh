@@ -32,7 +32,7 @@ if [ $(echo "$absolute_percent_diff >= $percentage_threshold" | bc -l) == 1 ]; t
           --arg master_monthly_cost $master_monthly_cost \
           --arg pull_request_monthly_cost $pull_request_monthly_cost \
           --arg diff "$(git diff --no-color --no-index master_infracost.txt pull_request_infracost.txt | tail -n +3)" \
-          '{body: "Monthly cost estimate can \($change_word) by \($absolute_percent_diff)% (master branch $\($master_monthly_cost) vs pull request $\($pull_request_monthly_cost))\n<details><summary>Infracost diff</summary>\n\n```diff\n\($diff)\n```\n</details>\n"}' | \
+          '{body: "Monthly cost estimate can \($change_word) by \($absolute_percent_diff)% (master branch $\($master_monthly_cost) vs pull request $\($pull_request_monthly_cost))\n<details><summary>infracost diff</summary>\n\n```diff\n\($diff)\n```\n</details>\n"}' | \
           curl -sL -X POST -d @- \
             -H "Content-Type: application/json" \
             -H "Authorization: token $GITHUB_TOKEN" \
