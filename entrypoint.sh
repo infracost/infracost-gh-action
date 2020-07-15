@@ -27,11 +27,12 @@ if [ $(echo "$absolute_percent_diff >= $percentage_threshold" | bc -l) == 1 ]; t
     change_word="decrease"
   fi
   echo "Posting GitHub comment as master branch and pull request diff ($absolute_percent_diff) is more than the percentage threshold ($percentage_threshold)."
-  jq -Mnc --arg diff "$(git diff --no-color --no-index master_infracost.txt pull_request_infracost.txt | tail -n +3)" \
+  jq -Mnc --arg change_word $change_word \
+          --arg absolute_percent_diff $absolute_percent_diff \
           --arg master_monthly_cost $master_monthly_cost \
           --arg pull_request_monthly_cost $pull_request_monthly_cost \
-          --arg absolute_percent_diff $absolute_percent_diff \
-          '{body: "Monthly cost estimate can \($change) by \($absolute_percent_diff)% (master branch $\($master_monthly_cost) vs pull request $\($pull_request_monthly_cost))\n<details><summary>Infracost diff</summary>\n\n```diff\n\($diff)\n```\n</details>\n"}' | \
+          --arg diff "$(git diff --no-color --no-index master_infracost.txt pull_request_infracost.txt | tail -n +3)" \
+          '{body: "Monthly cost estimate can \($change_word) by \($absolute_percent_diff)% (master branch $\($master_monthly_cost) vs pull request $\($pull_request_monthly_cost))\n<details><summary>Infracost diff</summary>\n\n```diff\n\($diff)\n```\n</details>\n"}' | \
           curl -sL -X POST -d @- \
             -H "Content-Type: application/json" \
             -H "Authorization: token $GITHUB_TOKEN" \
