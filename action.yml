@@ -1,4 +1,15 @@
-name: 'Run infracost diff'
+name: Run infracost diff
+inputs:
+  terraform_dir:
+    description: Path of the repo's terraform directory
+    required: true
+  percentage_threshold:
+    description: The absolute percentage threshold that triggers a pull request comment with the diff. Defaults to 0, meaning that a comment is posted if the cost estimate changes. For example, set to 5 to post a comment if the cost changes by plus or minus 5%.
+    required: false
+    default: 0
 runs:
   using: 'docker'
   image: 'Dockerfile'
+  args:
+    - ${{ inputs.terraform_dir }}
+    - ${{ inputs.percentage_threshold }}
