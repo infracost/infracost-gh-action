@@ -1,5 +1,5 @@
 name: Run infracost
-description: Show cost estimate changes from Terraform in pull requests.
+description: Show cloud cost estimate changes from Terraform in pull requests.
 author: infracost
 branding:
   icon: trending-up
