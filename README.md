@@ -1,6 +1,6 @@
-# infracost GitHub action
+# Infracost GitHub action
 
-This action runs [infracost](https://github.com/aliscott/infracost) on the provided terraform directory in the master branch and the pull request whenever a `.tf` file changes. It automatically adds a pull request comment showing the cost estimate `diff` if a percentage threshold is crossed.
+This action runs [Infracost](https://github.com/aliscott/infracost) on the provided terraform directory in the master branch and the pull request whenever a `.tf` file changes. It automatically adds a pull request comment showing the cost estimate `diff` if a percentage threshold is crossed.
 
 <img src="screenshot.png" width=557 alt="Example screenshot" />
 
