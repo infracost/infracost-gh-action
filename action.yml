@@ -1,4 +1,4 @@
-name: Run infracost
+name: Run Infracost
 description: Show cloud cost estimate changes from Terraform in pull requests.
 author: infracost
 branding:

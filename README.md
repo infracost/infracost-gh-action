@@ -16,7 +16,7 @@ This action runs [infracost](https://github.com/aliscott/infracost) on the provi
 
 ## Environment variables
 
-The AWS secrets mentioned below are used by terraform init and plan commands. As mentioned in the repo [readme](../../../README.md): you can run `infracost` in your terraform directories without worrying about security or privacy issues as no terraform secrets/tags/IDs etc are sent to the pricing service (only generic price-related attributes are used). Also, do not be alarmed by seeing the `terraform init` in output, no changes are made to your terraform or cloud resources. As a security precaution, read-only AWS IAM creds can be used.
+The AWS secrets mentioned below are used by terraform init and plan commands. As mentioned in the Infracost [repo readme](https://github.com/aliscott/infracost): you can run `infracost` in your terraform directories without worrying about security or privacy issues as no terraform secrets/tags/IDs etc are sent to the pricing service (only generic price-related attributes are used). Also, do not be alarmed by seeing the `terraform init` in output, no changes are made to your terraform or cloud resources. As a security precaution, read-only AWS IAM creds can be used.
 
 ### `AWS_ACCESS_KEY_ID`
 
