@@ -50,6 +50,7 @@ on:
   push:
     paths:
     - '**.tf'
+    - '**.tfvars'
 jobs:
   infracost:
     runs-on: ubuntu-latest
