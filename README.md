@@ -69,7 +69,7 @@ jobs:
         ref: ${{ github.event.pull_request.head.sha }}
         path: pull_request
     - name: Run infracost diff
-      uses: infracost/infracost-gh-action@v0.1.1
+      uses: infracost/infracost-gh-action@v0.1.2
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
