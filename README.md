@@ -1,6 +1,6 @@
 # Infracost GitHub action
 
-This action runs [Infracost](https://github.com/aliscott/infracost) on the provided terraform directory in the master branch and the pull request whenever a `.tf` file changes. It automatically adds a pull request comment showing the cost estimate `diff` if a percentage threshold is crossed.
+This action runs [Infracost](https://infracost.io) on the provided terraform directory in the master branch and the pull request whenever a `.tf` file changes. It automatically adds a pull request comment showing the cost estimate `diff` if a percentage threshold is crossed.
 
 <img src="screenshot.png" width=557 alt="Example screenshot" />
 
@@ -16,7 +16,7 @@ This action runs [Infracost](https://github.com/aliscott/infracost) on the provi
 
 ## Environment variables
 
-The AWS secrets mentioned below are used by terraform init and plan commands. As mentioned in the Infracost [repo readme](https://github.com/aliscott/infracost): you can run `infracost` in your terraform directories without worrying about security or privacy issues as no terraform secrets/tags/IDs etc are sent to the pricing service (only generic price-related attributes are used). Also, do not be alarmed by seeing the `terraform init` in output, no changes are made to your terraform or cloud resources. As a security precaution, read-only AWS IAM creds can be used.
+The AWS secrets mentioned below are used by terraform init and plan commands. As mentioned in the Infracost [repo readme](https://github.com/infracost/infracost): you can run `infracost` in your terraform directories without worrying about security or privacy issues as no terraform secrets/tags/IDs etc are sent to the pricing service (only generic price-related attributes are used). Also, do not be alarmed by seeing the `terraform init` in output, no changes are made to your terraform or cloud resources. As a security precaution, read-only AWS IAM creds can be used.
 
 Standard Terraform env vars can also be added if required, e.g. `TF_CLI_ARGS`.
 
@@ -69,7 +69,7 @@ jobs:
         ref: ${{ github.event.pull_request.head.sha }}
         path: pull_request
     - name: Run infracost diff
-      uses: aliscott/infracost-gh-action@v0.1.1
+      uses: infracost/infracost-gh-action@v0.1.1
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

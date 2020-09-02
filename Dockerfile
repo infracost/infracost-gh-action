@@ -11,7 +11,7 @@ RUN apk --update --no-cache add ca-certificates openssl sudo curl git jq && \
   unzip terraform.zip -d /bin && \
   rm -rf terraform.zip /var/cache/apk/*
 
-RUN curl --silent --location https://github.com/aliscott/infracost/releases/${INFRACOST_VERSION}/download/infracost-linux-amd64.tar.gz | tar xz -C /tmp
+RUN curl --silent --location https://github.com/infracost/infracost/releases/${INFRACOST_VERSION}/download/infracost-linux-amd64.tar.gz | tar xz -C /tmp
 RUN mv /tmp/infracost-linux-amd64 /usr/local/bin/infracost
 
 COPY entrypoint.sh /entrypoint.sh
