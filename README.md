@@ -16,9 +16,11 @@ This action runs [Infracost](https://infracost.io) on the provided terraform dir
 
 ## Environment variables
 
-The AWS secrets mentioned below are used by terraform init and plan commands. As mentioned in the Infracost [repo readme](https://github.com/infracost/infracost): you can run `infracost` in your terraform directories without worrying about security or privacy issues as no terraform secrets/tags/IDs etc are sent to the pricing service (only generic price-related attributes are used). Also, do not be alarmed by seeing the `terraform init` in output, no changes are made to your terraform or cloud resources. As a security precaution, read-only AWS IAM creds can be used.
+The AWS secrets mentioned below are used by terraform init and plan commands. As mentioned in the [Infracost FAQ](https://www.infracost.io/docs/faq) you can run `infracost` in your terraform directories without worrying about security or privacy issues as no cloud credentials, secrets, tags or Terraform resource identifiers are sent to Infracost's cloud pricing API. Infracost does not make any changes to your Terraform state or cloud resources.
 
-Standard Terraform env vars can also be added if required, e.g. `TF_CLI_ARGS`.
+### INFRACOST_API_KEY
+
+**Required if the Infracost hosted pricing API is used (default behavior)** To get an API key [download infracost](https://www.infracost.io/docs/#installation) and run `infracost register`.
 
 ### `AWS_ACCESS_KEY_ID`
 
@@ -31,6 +33,8 @@ Standard Terraform env vars can also be added if required, e.g. `TF_CLI_ARGS`.
 ### `GITHUB_TOKEN`
 
 **Required** GitHub token used to post comments, should be set to `${{ secrets.GITHUB_TOKEN }}` to use the default GitHub token available to actions.
+
+Standard Terraform env vars can also be added if required, e.g. `TF_CLI_ARGS`.
 
 ## Outputs
 
@@ -71,6 +75,7 @@ jobs:
     - name: Run infracost diff
       uses: infracost/infracost-gh-action@v0.1.2
       env:
+        INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
