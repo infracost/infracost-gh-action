@@ -2,7 +2,7 @@ FROM alpine:3.12
 
 # GitHub actions don't support build-args (https://github.community/t/feature-request-build-args-support-in-docker-container-actions/16846/4)
 # so using ENV might help people who need to fork/change it
-ENV TERRAFORM_VERSION=0.12.28 \
+ENV TERRAFORM_VERSION=0.13.3 \
   TERRAFORM_BINARY=terraform \
   INFRACOST_VERSION=latest
 
