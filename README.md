@@ -18,7 +18,7 @@ This action runs [Infracost](https://infracost.io) on the provided terraform dir
 
 The AWS secrets mentioned below are used by terraform init and plan commands. As mentioned in the [Infracost FAQ](https://www.infracost.io/docs/faq) you can run `infracost` in your terraform directories without worrying about security or privacy issues as no cloud credentials, secrets, tags or Terraform resource identifiers are sent to Infracost's cloud pricing API. Infracost does not make any changes to your Terraform state or cloud resources.
 
-### INFRACOST_API_KEY
+### `INFRACOST_API_KEY`
 
 **Required if the Infracost hosted pricing API is used (default behavior)** To get an API key [download Infracost](https://www.infracost.io/docs/#installation) and run `infracost register`.
 
