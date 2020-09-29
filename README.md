@@ -20,7 +20,7 @@ The AWS secrets mentioned below are used by terraform init and plan commands. As
 
 ### INFRACOST_API_KEY
 
-**Required if the Infracost hosted pricing API is used (default behavior)** To get an API key [download infracost](https://www.infracost.io/docs/#installation) and run `infracost register`.
+**Required if the Infracost hosted pricing API is used (default behavior)** To get an API key [download Infracost](https://www.infracost.io/docs/#installation) and run `infracost register`.
 
 ### `AWS_ACCESS_KEY_ID`
 
