@@ -5,14 +5,14 @@ percentage_threshold=$2
 echo "Using terraform_dir=$terraform_dir and percentage_threshold=$percentage_threshold"
 
 echo "Running infracost on master branch..."
-master_output=$(infracost --no-color --tfdir /github/workspace/master/$terraform_dir)
+master_output=$(infracost --no-color --log-level warn --tfdir /github/workspace/master/$terraform_dir)
 echo "$master_output"
 echo "$master_output" > master_infracost.txt
 master_monthly_cost=$(cat master_infracost.txt | awk '/OVERALL TOTAL/ { print $NF }')
 echo "::set-output name=master_monthly_cost::$master_monthly_cost"
 
 echo "Running infracost on pull_request..."
-pull_request_output=$(infracost --no-color --tfdir /github/workspace/pull_request/$terraform_dir)
+pull_request_output=$(infracost --no-color --log-level warn --tfdir /github/workspace/pull_request/$terraform_dir)
 echo "$pull_request_output"
 echo "$pull_request_output" > pull_request_infracost.txt
 pull_request_monthly_cost=$(cat pull_request_infracost.txt | awk '/OVERALL TOTAL/ { print $NF }')
