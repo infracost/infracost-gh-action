@@ -1,21 +1,50 @@
-#!/bin/sh -l
+#!/bin/sh -le
 
-terraform_dir=$1
-percentage_threshold=$2
-echo "Using terraform_dir=$terraform_dir and percentage_threshold=$percentage_threshold"
+tfjson=$1
+tfplan=$2
+tfdir=$3
+tfflags=$4
+percentage_threshold=$5
+pricing_api_endpoint=$6
 
-echo "Running infracost on master branch..."
-master_output=$(infracost --no-color --log-level warn --tfdir /github/workspace/master/$terraform_dir)
-echo "$master_output"
+save_infracost_cmd () {
+  local infracost_cmd="infracost --no-color --log-level warn"
+  if [ ! -z "$tfjson" ]; then
+    infracost_cmd="$infracost_cmd --tfjson $1/$tfjson"
+  fi
+  if [ ! -z "$tfplan" ]; then
+    infracost_cmd="$infracost_cmd --tfplan $1/$tfplan"
+  fi
+  if [ ! -z "$tfdir" ]; then
+    infracost_cmd="$infracost_cmd --tfdir $1/$tfdir"
+  fi
+  if [ ! -z "$tfflags" ]; then
+    infracost_cmd="$infracost_cmd --tfflags \"$tfflags\""
+  fi
+  if [ ! -z "$pricing_api_endpoint" ]; then
+    infracost_cmd="$infracost_cmd --pricing_api_endpoint $pricing_api_endpoint"
+  fi
+  echo "$infracost_cmd" > $1/infracost_cmd
+}
+
+dir="/github/workspace/master"
+save_infracost_cmd $dir
+echo "Running infracost on master branch using:"
+echo "  $ $(cat $dir/infracost_cmd)"
+master_output=$(cat $dir/infracost_cmd | sh)
 echo "$master_output" > master_infracost.txt
 master_monthly_cost=$(cat master_infracost.txt | awk '/OVERALL TOTAL/ { print $NF }')
+echo "  master_monthly_cost=$master_monthly_cost"
 echo "::set-output name=master_monthly_cost::$master_monthly_cost"
 
-echo "Running infracost on pull_request..."
-pull_request_output=$(infracost --no-color --log-level warn --tfdir /github/workspace/pull_request/$terraform_dir)
-echo "$pull_request_output"
+dir="/github/workspace/pull_request"
+save_infracost_cmd $dir
+echo "Running infracost on pull request using:"
+echo "  $ $(cat $dir/infracost_cmd)"
+pull_request_output=$(cat $dir/infracost_cmd | sh)
 echo "$pull_request_output" > pull_request_infracost.txt
 pull_request_monthly_cost=$(cat pull_request_infracost.txt | awk '/OVERALL TOTAL/ { print $NF }')
+echo "  pull_request_monthly_cost=$pull_request_monthly_cost"
 echo "::set-output name=pull_request_monthly_cost::$pull_request_monthly_cost"
 
 percent_diff=$(echo "scale=4; $pull_request_monthly_cost / $master_monthly_cost * 100 - 100" | bc)

@@ -5,13 +5,25 @@ branding:
   icon: trending-up
   color: yellow
 inputs:
-  terraform_dir:
-    description: Path of the repo's terraform directory.
-    required: true
+  tfjson:
+    description: Path to Terraform plan JSON file.
+    required: false
+  tfplan:
+    description: Path to Terraform plan file relative to 'tfdir'. Requires 'tfdir' to be set.
+    required: false
+  tfdir:
+    description: Path to the Terraform code directory (default is current working directory).
+    required: false
+  tfflags:
+    description: Flags to pass to the 'terraform plan' command.
+    required: false 
   percentage_threshold:
     description: The absolute percentage threshold that triggers a pull request comment with the diff. Defaults to 0, meaning that a comment is posted if the cost estimate changes. For example, set to 5 to post a comment if the cost estimate changes by plus or minus 5%.
     required: false
     default: 0
+  pricing_api_endpoint:
+    description: Specify an alternate price list API URL (default is https://pricing.api.infracost.io).
+    required: false
 outputs:
   master_monthly_cost:
     description: The master branch's monthly cost estimate.
@@ -21,5 +33,9 @@ runs:
   using: docker
   image: Dockerfile
   args:
-    - ${{ inputs.terraform_dir }}
+    - ${{ inputs.tfjson }}
+    - ${{ inputs.tfplan }}
+    - ${{ inputs.tfdir }}
+    - ${{ inputs.tfflags }}
     - ${{ inputs.percentage_threshold }}
+    - ${{ inputs.pricing_api_endpoint }}
