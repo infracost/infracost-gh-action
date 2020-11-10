@@ -11,6 +11,9 @@ inputs:
   tfplan:
     description: Path to Terraform plan file relative to 'tfdir'. Requires 'tfdir' to be set.
     required: false
+  use_tfstate:
+    description: Use Terraform state instead of generating a plan (default is false).
+    required: false
   tfdir:
     description: Path to the Terraform code directory (default is current working directory).
     required: false
@@ -35,6 +38,7 @@ runs:
   args:
     - ${{ inputs.tfjson }}
     - ${{ inputs.tfplan }}
+    - ${{ inputs.use_tfstate }}
     - ${{ inputs.tfdir }}
     - ${{ inputs.tfflags }}
     - ${{ inputs.percentage_threshold }}

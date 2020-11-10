@@ -2,10 +2,11 @@
 
 tfjson=$1
 tfplan=$2
-tfdir=$3
-tfflags=$4
-percentage_threshold=$5
-pricing_api_endpoint=$6
+use_tfstate=$3
+tfdir=$4
+tfflags=$5
+percentage_threshold=$6
+pricing_api_endpoint=$7
 
 save_infracost_cmd () {
   local infracost_cmd="infracost --no-color --log-level warn"
@@ -15,6 +16,9 @@ save_infracost_cmd () {
   if [ ! -z "$tfplan" ]; then
     infracost_cmd="$infracost_cmd --tfplan $1/$tfplan"
   fi
+  if $use_tfstate; then
+    infracost_cmd="$infracost_cmd --use-tfstate"
+  fi
   if [ ! -z "$tfdir" ]; then
     infracost_cmd="$infracost_cmd --tfdir $1/$tfdir"
   fi
@@ -22,7 +26,7 @@ save_infracost_cmd () {
     infracost_cmd="$infracost_cmd --tfflags \"$tfflags\""
   fi
   if [ ! -z "$pricing_api_endpoint" ]; then
-    infracost_cmd="$infracost_cmd --pricing_api_endpoint $pricing_api_endpoint"
+    infracost_cmd="$infracost_cmd --pricing-api-endpoint $pricing_api_endpoint"
   fi
   echo "$infracost_cmd" > $1/infracost_cmd
 }
