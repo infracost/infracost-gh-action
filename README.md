@@ -14,6 +14,10 @@ This action runs [Infracost](https://infracost.io) against the master branch and
 
 **Optional** Path to Terraform plan file relative to 'tfdir'. Requires 'tfdir' to be set.
 
+### `use_tfstate`
+
+**Optional** Use Terraform state instead of generating a plan (default is false).
+
 ### `tfdir`
 
 **Optional** Path to the Terraform code directory (default is current working directory).
