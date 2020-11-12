@@ -95,7 +95,7 @@ The pull request's monthly cost estimate.
           ref: ${{ github.event.pull_request.head.sha }}
           path: pull_request
       - name: Run infracost diff
-        uses: infracost/infracost-gh-action@master
+        uses: infracost/infracost-gh-action@master # Use a specific version if locking the GH Action version is preferred
         env:
           INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
