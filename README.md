@@ -1,10 +1,12 @@
-# Infracost GitHub action
+# Infracost GitHub Action
 
-This action runs [Infracost](https://infracost.io) against the master branch and the pull request whenever a Terraform file changes. It automatically adds a pull request comment showing the cost estimate difference (similar to `git diff`) if a percentage threshold is crossed.
+This GitHub Action runs [Infracost](https://infracost.io) against the master branch and the pull request whenever a Terraform file changes. It automatically adds a pull request comment showing the cost estimate difference (similar to `git diff`) if a percentage threshold is crossed.
 
 <img src="screenshot.png" width=557 alt="Example screenshot" />
 
 ## Inputs
+
+Infracost can be run with different options depending on the use-case, please read the [usage methods](https://www.infracost.io/docs/#usage-methods) docs, which explains how the following inputs can be used.
 
 ### `tfjson`
 
@@ -36,25 +38,17 @@ This action runs [Infracost](https://infracost.io) against the master branch and
 
 ## Environment variables
 
-The AWS secrets mentioned below are used by terraform init and plan commands. As mentioned in the [Infracost FAQ](https://www.infracost.io/docs/faq) you can run `infracost` in your terraform directories without worrying about security or privacy issues as no cloud credentials, secrets, tags or Terraform resource identifiers are sent to Infracost's cloud pricing API. Infracost does not make any changes to your Terraform state or cloud resources.
+As mentioned in the [Infracost FAQ](https://www.infracost.io/docs/faq) you can run `infracost` in your Terraform directories without worrying about security or privacy issues as no cloud credentials, secrets, tags or Terraform resource identifiers are sent to Infracost's Cloud Pricing API. Infracost does not make any changes to your Terraform state or cloud resources.
 
-Standard Terraform env vars can also be added if required, e.g. `TF_CLI_ARGS`.
+If the [Terraform directory method](https://www.infracost.io/docs/#1-terraform-directory) is being used with AWS, `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` should be set. Other useful environment variables are described in the [Infracost docs](https://www.infracost.io/docs/#environment-variables).
 
 ### `INFRACOST_API_KEY`
 
 **Required** To get an API key [download Infracost](https://www.infracost.io/docs/#installation) and run `infracost register`.
 
-### `AWS_ACCESS_KEY_ID`
-
-**Required** AWS access key ID is used by terraform init and plan commands.
-
-### `AWS_SECRET_ACCESS_KEY`
-
-**Required** AWS secret access key is used by terraform init and plan commands.
-
 ### `GITHUB_TOKEN`
 
-**Required** GitHub token used to post comments, should be set to `${{ secrets.GITHUB_TOKEN }}` to use the default GitHub token available to actions.
+**Required** GitHub token used to post comments, should be set to `${{ secrets.GITHUB_TOKEN }}` to use the default GitHub token available to actions (see example in the Usage section).
 
 ## Outputs
 
@@ -68,7 +62,7 @@ The pull request's monthly cost estimate.
 
 ## Usage
 
-1. [Add repo secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository) for `INFRACOST_API_KEY`, `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` to your GitHub repo.
+1. [Add repo secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository) for `INFRACOST_API_KEY` and any other required credentials to your GitHub repo (e.g. `AWS_ACCESS_KEY_ID`).
 
 2. Create a new file in `.github/workflows/infracost.yml` in your repo with the following content. Use the Inputs and Environment Variables section above to decide which `env` and `with` options work for your Terraform setup. The following example uses `tfdir` and `tfflags` so it would be the equivalent of running `terraform -var-file=myvars.tfvars` inside the directory with the terraform code.
 
