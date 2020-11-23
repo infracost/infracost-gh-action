@@ -35,7 +35,7 @@ outputs:
     description: The pull request's monthly cost estimate.
 runs:
   using: docker
-  image: Dockerfile
+  image: docker://infracost/infracost:latest # Use a specific version instead of latest if locking is preferred
   args:
     - ${{ inputs.tfjson }}
     - ${{ inputs.tfplan }}
