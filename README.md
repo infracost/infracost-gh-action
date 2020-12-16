@@ -4,6 +4,8 @@ This GitHub Action runs [Infracost](https://infracost.io) against the master/mai
 
 This Action uses the latest version of Infracost by default as we continually add support for more cloud resources.
 
+As mentioned in the [Infracost FAQ](https://www.infracost.io/docs/faq) you can run `infracost` in your Terraform directories without worrying about security or privacy issues as no cloud credentials, secrets, tags or Terraform resource identifiers are sent to Infracost's Cloud Pricing API. Infracost does not make any changes to your Terraform state or cloud resources.
+
 <img src="screenshot.png" width=557 alt="Example screenshot" />
 
 ## Inputs
@@ -40,9 +42,11 @@ Infracost can be run with different options depending on the use-case, please re
 
 ## Environment variables
 
-As mentioned in the [Infracost FAQ](https://www.infracost.io/docs/faq) you can run `infracost` in your Terraform directories without worrying about security or privacy issues as no cloud credentials, secrets, tags or Terraform resource identifiers are sent to Infracost's Cloud Pricing API. Infracost does not make any changes to your Terraform state or cloud resources.
+The following environment variables are required. Other supported environment variables are described in the [Infracost docs](https://www.infracost.io/docs/#environment-variables).
 
-If the [Terraform directory method](https://www.infracost.io/docs/#1-terraform-directory) is being used with AWS, `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` should be set. Other useful environment variables are described in the [Infracost docs](https://www.infracost.io/docs/#environment-variables).
+If the [Terraform directory method](https://www.infracost.io/docs/#1-terraform-directory) is being used with AWS, `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` should be set.
+
+Terraform Cloud users should follow [this section](https://www.infracost.io/docs/#terraform-cloud-users). Terragrunt users should follow [this section](https://www.infracost.io/docs/#terragrunt-users).
 
 ### `INFRACOST_API_KEY`
 
