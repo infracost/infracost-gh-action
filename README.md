@@ -75,6 +75,10 @@ The current branch's monthly cost estimate.
   ```
   on:
     push:
+      # This action runs on PRs, so no need to rerun it on master/main
+      branches-ignore:
+        - master
+        - main
       paths:
       - '**.tf'
       - '**.tfvars'
