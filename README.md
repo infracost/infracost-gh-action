@@ -1,8 +1,8 @@
 # Infracost GitHub Action
 
-This GitHub Action runs [Infracost](https://infracost.io) against the master/main branch and the pull request whenever a Terraform file changes. It automatically adds a pull request comment showing the cost estimate difference (similar to `git diff`) if a percentage threshold is crossed.
+This GitHub Action runs [Infracost](https://infracost.io) against the master/main branch and the pull request whenever a Terraform file changes. It automatically adds a pull request comment showing the cost estimate difference (similar to `git diff`) if a percentage threshold is crossed. See [this repo for a demo](https://github.com/infracost/gh-actions-demo).
 
-This Action uses the latest version of Infracost by default as we continually add support for more cloud resources.
+This Action uses the latest version of Infracost by default as we regularly add support for more cloud resources. If you run into any issues, please join our [community Slack channel](https://www.infracost.io/community-chat); we'd be happy to guide you through it.
 
 As mentioned in the [Infracost FAQ](https://www.infracost.io/docs/faq) you can run `infracost` in your Terraform directories without worrying about security or privacy issues as no cloud credentials, secrets, tags or Terraform resource identifiers are sent to Infracost's Cloud Pricing API. Infracost does not make any changes to your Terraform state or cloud resources.
 
@@ -30,7 +30,7 @@ Infracost can be run with different options depending on the use-case, please re
 
 ### `tfflags`
 
-**Optional** Flags to pass to the 'terraform plan' command.
+**Optional** Flags to pass to the 'terraform plan' command, e.g. `"-var-file=myvars.tfvars"`.
 
 ### `percentage_threshold`
 
@@ -55,6 +55,10 @@ Terraform Cloud users should follow [this section](https://www.infracost.io/docs
 ### `GITHUB_TOKEN`
 
 **Required** GitHub token used to post comments, should be set to `${{ secrets.GITHUB_TOKEN }}` to use the default GitHub token available to actions (see example in the Usage section).
+
+### `GITHUB_API_URL`
+
+**Optional** GitHub API URL, defaults to https://api.github.com.
 
 ## Outputs
 
@@ -94,15 +98,14 @@ The current branch's monthly cost estimate.
         uses: infracost/infracost-gh-action@master # Use a specific version instead of master if locking is preferred
         env:
           INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Do not change
         with:
           entrypoint: /scripts/ci/diff.sh # Do not change
           tfdir: PATH/TO/CODE
           tfflags: -var-file=myvars.tfvars
-          percentage_threshold: 1
   ```
+
+3. Send a new pull request to change something in Terraform that costs money; a comment should be posted on the pull request. Check the GitHub Actions logs if there are issues.
 
 ## Contributing
 
