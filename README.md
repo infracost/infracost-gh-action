@@ -42,11 +42,11 @@ Infracost can be run with different options depending on the use-case, please re
 
 ## Environment variables
 
-The following environment variables are required. Other supported environment variables are described in the [Infracost docs](https://www.infracost.io/docs/#environment-variables).
+The following environment variables are required. Other supported environment variables are described in the [Infracost docs](https://www.infracost.io/docs/environment_variables).
 
 If the [Terraform directory method](https://www.infracost.io/docs/#1-terraform-directory) is being used with AWS, `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` should be set.
 
-Terraform Cloud users should follow [this section](https://www.infracost.io/docs/#terraform-cloud-users). Terragrunt users should follow [this section](https://www.infracost.io/docs/#terragrunt-users).
+Terraform Cloud/Enterprise users should follow [this section](https://www.infracost.io/docs/terraform_cloud_enterprise). Terragrunt users should follow [this section](https://www.infracost.io/docs/terragrunt).
 
 ### `INFRACOST_API_KEY`
 
