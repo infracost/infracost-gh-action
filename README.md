@@ -40,6 +40,10 @@ Infracost can be run with different options depending on the use-case, please re
 
 **Optional** Specify an alternate price list API URL (default is https://pricing.api.infracost.io).
 
+### `usage_file`
+
+**Optional** Path to Infracost usage file that specifies values for usage-based resources.
+
 ## Environment variables
 
 The following environment variables are required. Other supported environment variables are described in the [Infracost docs](https://www.infracost.io/docs/environment_variables).
@@ -101,7 +105,7 @@ The current branch's monthly cost estimate.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Do not change
         with:
           entrypoint: /scripts/ci/diff.sh # Do not change
-          tfdir: PATH/TO/CODE
+          tfdir: path/to/code
           tfflags: -var-file=myvars.tfvars
   ```
 
