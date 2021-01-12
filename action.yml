@@ -28,6 +28,9 @@ inputs:
   pricing_api_endpoint:
     description: Specify an alternate price list API URL (default is https://pricing.api.infracost.io).
     required: false
+  usage_file:
+    description: Path to Infracost usage file that specifies values for usage-based resources.
+    required: false
 outputs:
   master_monthly_cost:
     description: The master branch's monthly cost estimate.
@@ -44,3 +47,5 @@ runs:
     - ${{ inputs.tfflags }}
     - ${{ inputs.percentage_threshold }}
     - ${{ inputs.pricing_api_endpoint }}
+    - ${{ inputs.usage_file }}
+
