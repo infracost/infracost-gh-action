@@ -60,6 +60,10 @@ Terraform Cloud/Enterprise users should follow [this section](https://www.infrac
 
 **Required** GitHub token used to post comments, should be set to `${{ secrets.GITHUB_TOKEN }}` to use the default GitHub token available to actions (see example in the Usage section).
 
+### `TERRAFORM_BINARY`
+
+**Optional** Used to change the path to the terraform binary or version, see [here](https://www.infracost.io/docs/environment_variables/#cicd-integrations) for the available options.
+
 ### `GITHUB_API_URL`
 
 **Optional** GitHub API URL, defaults to https://api.github.com.
