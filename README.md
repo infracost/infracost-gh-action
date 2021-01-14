@@ -64,6 +64,10 @@ Terraform Cloud/Enterprise users should follow [this section](https://www.infrac
 
 **Optional** Used to change the path to the terraform binary or version, see [here](https://www.infracost.io/docs/environment_variables/#cicd-integrations) for the available options.
 
+### `GIT_SSH_KEY`
+
+**Optional** If you're using terraform modules from private Git repositories you can set this environment variable to your private Git SSH key so terraform can access your module.
+
 ### `GITHUB_API_URL`
 
 **Optional** GitHub API URL, defaults to https://api.github.com.
@@ -94,7 +98,7 @@ The current branch's monthly cost estimate.
       paths:
       - '**.tf'
       - '**.tfvars'
-      - '**.tfvars.json'    
+      - '**.tfvars.json'
   jobs:
     infracost:
       runs-on: ubuntu-latest
