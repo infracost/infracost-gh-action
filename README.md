@@ -10,19 +10,7 @@ As mentioned in the [Infracost FAQ](https://www.infracost.io/docs/faq) you can r
 
 ## Inputs
 
-Infracost can be run with different options depending on the use-case, please read the [usage methods](https://www.infracost.io/docs/#usage-methods) docs, which explains how the following inputs can be used.
-
-### `tfjson`
-
-**Optional** Path to Terraform plan JSON file.
-
-### `tfplan`
-
-**Optional** Path to Terraform plan file relative to 'tfdir'. Requires 'tfdir' to be set.
-
-### `use_tfstate`
-
-**Optional** Use Terraform state instead of generating a plan (default is false).
+Infracost should be run using the [Terraform directory method](https://www.infracost.io/docs/#1-terraform-directory) with this GitHub Action. Once [this issue](https://github.com/infracost/infracost/issues/99) is released, we'll be able to support other methods.
 
 ### `tfdir`
 
@@ -30,7 +18,11 @@ Infracost can be run with different options depending on the use-case, please re
 
 ### `tfflags`
 
-**Optional** Flags to pass to the 'terraform plan' command, e.g. `"-var-file=myvars.tfvars"`.
+**Optional** Flags to pass to the 'terraform plan' command, e.g. `"-var-file=myvars.tfvars -var-file=othervars.tfvars'"`.
+
+### `usage_file`
+
+**Optional** Path to Infracost [usage file](https://www.infracost.io/docs/usage_based_resources#infracost-usage-file) that specifies values for usage-based resources. The file should be present in the master/main branch too.
 
 ### `percentage_threshold`
 
@@ -40,17 +32,11 @@ Infracost can be run with different options depending on the use-case, please re
 
 **Optional** Specify an alternate price list API URL (default is https://pricing.api.infracost.io).
 
-### `usage_file`
-
-**Optional** Path to Infracost usage file that specifies values for usage-based resources.
-
 ## Environment variables
 
-The following environment variables are required. Other supported environment variables are described in the [Infracost docs](https://www.infracost.io/docs/environment_variables).
+The following environment variables are required. Other supported environment variables are described in the [Infracost docs](https://www.infracost.io/docs/environment_variables). [Repo secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository) can be used for sensitive environment values.
 
-If the [Terraform directory method](https://www.infracost.io/docs/#1-terraform-directory) is being used with AWS, `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` should be set.
-
-Terraform Cloud/Enterprise users should follow [this section](https://www.infracost.io/docs/terraform_cloud_enterprise). Terragrunt users should follow [this section](https://www.infracost.io/docs/terragrunt).
+Terragrunt users should follow [this section](https://www.infracost.io/docs/terragrunt).
 
 ### `INFRACOST_API_KEY`
 
@@ -59,6 +45,14 @@ Terraform Cloud/Enterprise users should follow [this section](https://www.infrac
 ### `GITHUB_TOKEN`
 
 **Required** GitHub token used to post comments, should be set to `${{ secrets.GITHUB_TOKEN }}` to use the default GitHub token available to actions (see example in the Usage section).
+
+### Cloud credentials
+
+**Required** You do not need to set cloud credentials if you use Terraform Cloud/Enterprise's remote execution mode, instead you should follow [this section](https://www.infracost.io/docs/terraform_cloud_enterprise).
+
+For all other users, the following is needed so Terraform can run `init`:
+- AWS users should set `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+- GCP users should set `GOOGLE_CREDENTIALS` or read [this section](https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/provider_reference#full-reference) of the Terraform docs for other options.
 
 ### `TERRAFORM_BINARY`
 
@@ -111,6 +105,7 @@ The current branch's monthly cost estimate.
         env:
           INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Do not change
+          # See the cloud credentials section for the options
         with:
           entrypoint: /scripts/ci/diff.sh # Do not change
           tfdir: path/to/code
