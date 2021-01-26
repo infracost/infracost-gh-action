@@ -22,7 +22,7 @@ Infracost should be run using the [Terraform directory method](https://www.infra
 
 ### `usage_file`
 
-**Optional** Path to Infracost [usage file](https://www.infracost.io/docs/usage_based_resources#infracost-usage-file) that specifies values for usage-based resources. The file should be present in the master/main branch too.
+**Optional** Path to Infracost [usage file](https://www.infracost.io/docs/usage_based_resources#infracost-usage-file) that specifies values for usage-based resources, see [this example file](https://github.com/infracost/infracost/blob/master/infracost-usage-example.yml) for the available options. The file should be present in the master/main branch too.
 
 ### `percentage_threshold`
 
