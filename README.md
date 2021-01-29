@@ -84,8 +84,9 @@ The current branch's monthly cost estimate.
 
   ```
   on:
+    # `pull_request` can be used instead of `push`. We think push is better as new commits to PR re-run the action to show a new cost diff.
     push:
-      # This action runs on PRs, so no need to rerun it on master/main
+      # For `push`, there's no need to re-run on master/main.
       branches-ignore:
         - master
         - main
