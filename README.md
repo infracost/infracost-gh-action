@@ -18,7 +18,7 @@ Infracost should be run using the [Terraform directory method](https://www.infra
 
 ### `tfflags`
 
-**Optional** Flags to pass to the 'terraform plan' command, e.g. `"-var-file=myvars.tfvars -var-file=othervars.tfvars'"`.
+**Optional** Flags to pass to the 'terraform plan' command, e.g. `"-var-file=myvars.tfvars -var-file=othervars.tfvars"`.
 
 ### `usage_file`
 
