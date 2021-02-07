@@ -5,20 +5,20 @@ branding:
   icon: trending-up
   color: yellow
 inputs:
-  tfjson:
+  terraform_json_file:
     description: Path to Terraform plan JSON file.
     required: false
-  tfplan:
-    description: Path to Terraform plan file relative to 'tfdir'. Requires 'tfdir' to be set.
+  terraform_plan_file:
+    description: Path to Terraform plan file relative to 'terraform_dir'. Requires 'terraform_dir' to be set.
     required: false
-  use_tfstate:
+  terraform_use_state:
     description: Use Terraform state instead of generating a plan (default is false).
     required: false
     default: false
-  tfdir:
+  terraform_dir:
     description: Path to the Terraform code directory (default is current working directory).
     required: false
-  tfflags:
+  terraform_plan_flags:
     description: Flags to pass to the 'terraform plan' command.
     required: false 
   percentage_threshold:
@@ -26,7 +26,7 @@ inputs:
     required: false
     default: 0
   pricing_api_endpoint:
-    description: Specify an alternate price list API URL (default is https://pricing.api.infracost.io).
+    description: Specify an alternate Cloud Pricing API URL (default is https://pricing.api.infracost.io).
     required: false
   usage_file:
     description: Path to Infracost usage file that specifies values for usage-based resources.
@@ -40,11 +40,11 @@ runs:
   using: docker
   image: docker://infracost/infracost:latest # Use a specific version instead of latest if locking is preferred
   args:
-    - ${{ inputs.tfjson }}
-    - ${{ inputs.tfplan }}
-    - ${{ inputs.use_tfstate }}
-    - ${{ inputs.tfdir }}
-    - ${{ inputs.tfflags }}
+    - ${{ inputs.terraform_json_file }}
+    - ${{ inputs.terraform_plan_file }}
+    - ${{ inputs.terraform_use_state }}
+    - ${{ inputs.terraform_dir }}
+    - ${{ inputs.terraform_plan_flags }}
     - ${{ inputs.percentage_threshold }}
     - ${{ inputs.pricing_api_endpoint }}
     - ${{ inputs.usage_file }}

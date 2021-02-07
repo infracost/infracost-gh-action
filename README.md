@@ -10,13 +10,13 @@ As mentioned in the [FAQ](https://www.infracost.io/docs/faq), you can run Infrac
 
 ## Inputs
 
-Infracost should be run using the [Terraform directory method](https://www.infracost.io/docs/#1-terraform-directory) with this GitHub Action. Once [this issue](https://github.com/infracost/infracost/issues/99) is released, we'll be able to support other methods.
+Infracost should be run using the [Terraform directory method](https://www.infracost.io/docs/#1-terraform-directory) with this GitHub Action. Once [this issue](https://github.com/infracost/infracost/issues/394) is released, we'll be able to support other methods.
 
-### `tfdir`
+### `terraform_dir`
 
 **Optional** Path to the Terraform code directory (default is current working directory).
 
-### `tfflags`
+### `terraform_plan_flags`
 
 **Optional** Flags to pass to the 'terraform plan' command, e.g. `"-var-file=myvars.tfvars -var-file=othervars.tfvars"`.
 
@@ -30,7 +30,7 @@ Infracost should be run using the [Terraform directory method](https://www.infra
 
 ### `pricing_api_endpoint`
 
-**Optional** Specify an alternate price list API URL (default is https://pricing.api.infracost.io).
+**Optional** Specify an alternate Cloud Pricing API URL (default is https://pricing.api.infracost.io).
 
 ## Environment variables
 
@@ -54,7 +54,7 @@ For all other users, the following is needed so Terraform can run `init`:
 - AWS users should set `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
 - GCP users should set `GOOGLE_CREDENTIALS` or read [this section](https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/provider_reference#full-reference) of the Terraform docs for other options.
 
-### `TERRAFORM_BINARY`
+### `INFRACOST_TERRAFORM_BINARY`
 
 **Optional** Used to change the path to the terraform binary or version, see [here](https://www.infracost.io/docs/environment_variables/#cicd-integrations) for the available options.
 
@@ -80,7 +80,7 @@ The current branch's monthly cost estimate.
 
 1. [Add repo secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository) for `INFRACOST_API_KEY` and any other required credentials to your GitHub repo (e.g. `AWS_ACCESS_KEY_ID`).
 
-2. Create a new file in `.github/workflows/infracost.yml` in your repo with the following content. Use the Inputs and Environment Variables section above to decide which `env` and `with` options work for your Terraform setup. The following example uses `tfdir` and `tfflags` so it would be the equivalent of running `terraform -var-file=myvars.tfvars` inside the directory with the terraform code. The GitHub Actions [docs](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#on) describe other options for `on`, though `pull_request` is probably what you want.
+2. Create a new file in `.github/workflows/infracost.yml` in your repo with the following content. Use the Inputs and Environment Variables section above to decide which `env` and `with` options work for your Terraform setup. The following example uses `terraform_dir` and `terraform_plan_flags` so it would be the equivalent of running `terraform -var-file=myvars.tfvars` inside the directory with the terraform code. The GitHub Actions [docs](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#on) describe other options for `on`, though `pull_request` is probably what you want.
 
   ```
   on:
@@ -104,8 +104,8 @@ The current branch's monthly cost estimate.
           # See the cloud credentials section for the options
         with:
           entrypoint: /scripts/ci/diff.sh # Do not change
-          tfdir: path/to/code
-          tfflags: -var-file=myvars.tfvars
+          terraform_dir: path/to/code
+          terraform_plan_flags: -var-file=myvars.tfvars
   ```
 
 3. Send a new pull request to change something in Terraform that costs money; a comment should be posted on the pull request. Check the GitHub Actions logs if there are issues.
