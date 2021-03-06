@@ -10,6 +10,9 @@ inputs:
     required: false
   terraform_plan_flags:
     description: Flags to pass to the 'terraform plan' command.
+    required: false
+  terraform_workspace:
+    description: The Terraform workspace to use
     required: false 
   percentage_threshold:
     description: The absolute percentage threshold that triggers a pull request comment with the diff. Defaults to 0, meaning that a comment is posted if the cost estimate changes. For example, set to 5 to post a comment if the cost estimate changes by plus or minus 5%.
@@ -17,6 +20,9 @@ inputs:
     default: 0
   usage_file:
     description: Path to Infracost usage file that specifies values for usage-based resources.
+    required: false
+  config_file:
+    description: Path to the Infracost config file. Cannot be used with other flags.
     required: false
 outputs:
   master_monthly_cost:
@@ -29,6 +35,8 @@ runs:
   args:
     - ${{ inputs.path }}
     - ${{ inputs.terraform_plan_flags }}
+    - ${{ inputs.terraform_workspace }}
     - ${{ inputs.percentage_threshold }}
     - ${{ inputs.usage_file }}
+    - ${{ inputs.config_file }}
 
