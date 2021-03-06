@@ -5,14 +5,8 @@ branding:
   icon: trending-up
   color: yellow
 inputs:
-  terraform_json_file:
-    description: Path to Terraform plan JSON file.
-    required: false
-  terraform_plan_file:
-    description: Path to Terraform plan file relative to 'terraform_dir'. Requires 'terraform_dir' to be set.
-    required: false
-  terraform_dir:
-    description: Path to the Terraform code directory (default is current working directory).
+  path:
+    description: Path to the Terraform code directory or JSON/plan file.
     required: false
   terraform_plan_flags:
     description: Flags to pass to the 'terraform plan' command.
@@ -33,9 +27,7 @@ runs:
   using: docker
   image: docker://infracost/infracost:test # Use a specific version instead of latest if locking is preferred
   args:
-    - ${{ inputs.terraform_json_file }}
-    - ${{ inputs.terraform_plan_file }}
-    - ${{ inputs.terraform_dir }}
+    - ${{ inputs.path }}
     - ${{ inputs.terraform_plan_flags }}
     - ${{ inputs.percentage_threshold }}
     - ${{ inputs.usage_file }}
