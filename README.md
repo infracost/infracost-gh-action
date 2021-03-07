@@ -74,7 +74,7 @@ The past total monthly cost estimate.
 
 1. [Add repo secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository) for `INFRACOST_API_KEY` and any other required credentials to your GitHub repo (e.g. `AWS_ACCESS_KEY_ID`).
 
-2. Create a new file in `.github/workflows/infracost.yml` in your repo with the following content. Use the Inputs and Environment Variables section above to decide which `env` and `with` options work for your Terraform setup. The following example uses `terraform_dir` and `terraform_plan_flags` so it would be the equivalent of running `terraform -var-file=myvars.tfvars` inside the directory with the Terraform code. The GitHub Actions [docs](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#on) describe other options for `on`, though `pull_request` is probably what you want.
+2. Create a new file in `.github/workflows/infracost.yml` in your repo with the following content. Use the Inputs and Environment Variables section above to decide which `env` and `with` options work for your Terraform setup. The following example uses `path` to specify the location of the Terraform directory and `terraform_plan_flags` to specify the variables file to use when running `terraform plan`. The GitHub Actions [docs](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#on) describe other options for `on`, though `pull_request` is probably what you want.
 
   ```
   on:
@@ -99,7 +99,7 @@ The past total monthly cost estimate.
         with:
           entrypoint: /scripts/ci/diff.sh # Do not change
           path: path/to/code
-          terraform_plan_flags: -var-file=myvars.tfvars
+          terraform_plan_flags: -var-file=my.tfvars
   ```
 
 3. Send a new pull request to change something in Terraform that costs money; a comment should be posted on the pull request. Check the GitHub Actions logs if there are issues.
