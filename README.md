@@ -22,17 +22,13 @@ As mentioned in the [FAQ](https://www.infracost.io/docs/faq), you can run Infrac
 
 **Optional** Path to Infracost [usage file](https://www.infracost.io/docs/usage_based_resources#infracost-usage-file) that specifies values for usage-based resources, see [this example file](https://github.com/infracost/infracost/blob/master/infracost-usage-example.yml) for the available options.
 
-### `usage_file`
-
-**Optional** Path to Infracost [usage file](https://www.infracost.io/docs/usage_based_resources#infracost-usage-file) that specifies values for usage-based resources, see [this example file](https://github.com/infracost/infracost/blob/master/infracost-usage-example.yml) for the available options.
-
 ### `config_file`
 
-**Optional** Path to the Infracost config file. Cannot be used with path, terraform* or usage-file flags.
+**Optional** Path to the Infracost [config file](https://www.infracost.io/docs/config_file/). Cannot be used with path, terraform* or usage-file flags. See [this example file](https://github.com/infracost/infracost/blob/master/infracost-example.yml) for the available options.
 
 ### `percentage_threshold`
 
-**Optional** The absolute percentage threshold that triggers a pull request comment with the diff. Defaults to 0, meaning that a comment is posted if the cost estimate changes. For example, set to 5 to post a comment if the cost estimate changes by plus or minus 5%.
+**Optional** The absolute percentage threshold that triggers a pull request comment with the diff. Defaults to 0, meaning that a comment is posted if the cost estimate changes. For example, set to 5 to post a comment if the cost estimate changes by more than plus or minus 5%.
 
 ## Environment variables
 
