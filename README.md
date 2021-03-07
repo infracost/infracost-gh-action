@@ -1,6 +1,6 @@
 # Infracost GitHub Action
 
-This GitHub Action runs [Infracost](https://infracost.io) against the the pull request whenever a Terraform file changes. It automatically adds a pull request comment showing the cost estimate difference for the planned state if a percentage threshold is crossed. See [this repo for a demo](https://github.com/infracost/gh-actions-demo).
+This GitHub Action runs [Infracost](https://infracost.io) against the pull request whenever a Terraform file changes. It automatically adds a pull request comment showing the cost estimate difference for the planned state if a percentage threshold is crossed. See [this repo for a demo](https://github.com/infracost/gh-actions-demo).
 
 This Action uses the latest version of Infracost by default as we regularly add support for more cloud resources. If you run into any issues, please join our [community Slack channel](https://www.infracost.io/community-chat); we'd be happy to guide you through it.
 
@@ -59,10 +59,6 @@ For all other users, the following is needed so Terraform can run `init`:
 ### `GIT_SSH_KEY`
 
 **Optional** If you're using Terraform modules from private Git repositories you can set this environment variable to your private Git SSH key so Terraform can access your module.
-
-### `GITHUB_API_URL`
-
-**Optional** GitHub API URL, defaults to https://api.github.com.
 
 ## Outputs
 
