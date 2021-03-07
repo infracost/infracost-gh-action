@@ -10,27 +10,29 @@ As mentioned in the [FAQ](https://www.infracost.io/docs/faq), you can run Infrac
 
 ## Inputs
 
-Infracost should be run using the [Terraform directory method](https://www.infracost.io/docs/#1-terraform-directory) with this GitHub Action. Once [this issue](https://github.com/infracost/infracost/issues/394) is released, we'll be able to support other methods.
+### `path`
 
-### `terraform_dir`
-
-**Optional** Path to the Terraform code directory (default is current working directory).
+**Optional** Path to the Terraform directory or JSON/plan file. Either `path` or `config_file` is required.
 
 ### `terraform_plan_flags`
 
-**Optional** Flags to pass to the 'terraform plan' command, e.g. `"-var-file=myvars.tfvars -var-file=othervars.tfvars"`.
+**Optional** Flags to pass to the 'terraform plan' command, e.g. `"-var-file=myvars.tfvars -var-file=othervars.tfvars"`. Applicable when path is a Terraform directory.
 
 ### `usage_file`
 
-**Optional** Path to Infracost [usage file](https://www.infracost.io/docs/usage_based_resources#infracost-usage-file) that specifies values for usage-based resources, see [this example file](https://github.com/infracost/infracost/blob/master/infracost-usage-example.yml) for the available options. The file should be present in the master/main branch too.
+**Optional** Path to Infracost [usage file](https://www.infracost.io/docs/usage_based_resources#infracost-usage-file) that specifies values for usage-based resources, see [this example file](https://github.com/infracost/infracost/blob/master/infracost-usage-example.yml) for the available options.
+
+### `usage_file`
+
+**Optional** Path to Infracost [usage file](https://www.infracost.io/docs/usage_based_resources#infracost-usage-file) that specifies values for usage-based resources, see [this example file](https://github.com/infracost/infracost/blob/master/infracost-usage-example.yml) for the available options.
+
+### `config_file`
+
+**Optional** Path to the Infracost config file. Cannot be used with path, terraform* or usage-file flags.
 
 ### `percentage_threshold`
 
 **Optional** The absolute percentage threshold that triggers a pull request comment with the diff. Defaults to 0, meaning that a comment is posted if the cost estimate changes. For example, set to 5 to post a comment if the cost estimate changes by plus or minus 5%.
-
-### `pricing_api_endpoint`
-
-**Optional** Specify an alternate Cloud Pricing API URL (default is https://pricing.api.infracost.io).
 
 ## Environment variables
 
@@ -68,13 +70,13 @@ For all other users, the following is needed so Terraform can run `init`:
 
 ## Outputs
 
-### `default_branch_monthly_cost`
+### `total_monthly_cost`
 
-The default branch's monthly cost estimate.
+The new total monthly cost estimate.
 
-### `current_branch_monthly_cost`
+### `past_total_monthly_cost`
 
-The current branch's monthly cost estimate.
+The past total monthly cost estimate.
 
 ## Usage
 
@@ -104,7 +106,7 @@ The current branch's monthly cost estimate.
           # See the cloud credentials section for the options
         with:
           entrypoint: /scripts/ci/diff.sh # Do not change
-          terraform_dir: path/to/code
+          path: path/to/code
           terraform_plan_flags: -var-file=myvars.tfvars
   ```
 

@@ -6,29 +6,29 @@ branding:
   color: yellow
 inputs:
   path:
-    description: Path to the Terraform code directory or JSON/plan file.
+    description: Path to the Terraform directory or JSON/plan file.
     required: false
   terraform_plan_flags:
-    description: Flags to pass to the 'terraform plan' command.
+    description: Flags to pass to the 'terraform plan' command. Applicable when path is a Terraform directory.
     required: false
   terraform_workspace:
-    description: The Terraform workspace to use
+    description: The Terraform workspace to use. Applicable when path is a Terraform directory.
     required: false 
-  percentage_threshold:
-    description: The absolute percentage threshold that triggers a pull request comment with the diff. Defaults to 0, meaning that a comment is posted if the cost estimate changes. For example, set to 5 to post a comment if the cost estimate changes by plus or minus 5%.
-    required: false
-    default: 0
   usage_file:
     description: Path to Infracost usage file that specifies values for usage-based resources.
     required: false
   config_file:
-    description: Path to the Infracost config file. Cannot be used with other flags.
+    description: Path to the Infracost config file. Cannot be used with path, terraform* or usage-file flags.
     required: false
+  percentage_threshold:
+    description: The absolute percentage threshold that triggers a pull request comment with the diff. Defaults to 0, meaning that a comment is posted if the cost estimate changes. For example, set to 5 to post a comment if the cost estimate changes by plus or minus 5%.
+    required: false
+    default: 0
 outputs:
-  master_monthly_cost:
-    description: The master branch's monthly cost estimate.
-  pull_request_monthly_cost:
-    description: The pull request's monthly cost estimate.
+  total_monthly_cost:
+    description: The new total monthly cost estimate.
+  past_total_monthly_cost:
+    description: The past total monthly cost estimate.
 runs:
   using: docker
   image: docker://infracost/infracost:test # Use a specific version instead of latest if locking is preferred
@@ -36,7 +36,7 @@ runs:
     - ${{ inputs.path }}
     - ${{ inputs.terraform_plan_flags }}
     - ${{ inputs.terraform_workspace }}
-    - ${{ inputs.percentage_threshold }}
     - ${{ inputs.usage_file }}
     - ${{ inputs.config_file }}
+    - ${{ inputs.percentage_threshold }}
 
