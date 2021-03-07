@@ -31,7 +31,7 @@ outputs:
     description: The past total monthly cost estimate.
 runs:
   using: docker
-  image: docker://infracost/infracost:test # Use a specific version instead of latest if locking is preferred
+  image: docker://infracost/infracost:latest # Use a specific version instead of latest if locking is preferred
   args:
     - ${{ inputs.path }}
     - ${{ inputs.terraform_plan_flags }}
