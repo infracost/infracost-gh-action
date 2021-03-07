@@ -1,6 +1,6 @@
 # Infracost GitHub Action
 
-This GitHub Action runs [Infracost](https://infracost.io) against the master/main branch and the pull request whenever a Terraform file changes. It automatically adds a pull request comment showing the cost estimate difference (similar to `git diff`) if a percentage threshold is crossed. See [this repo for a demo](https://github.com/infracost/gh-actions-demo).
+This GitHub Action runs [Infracost](https://infracost.io) against the the pull request whenever a Terraform file changes. It automatically adds a pull request comment showing the cost estimate difference for the planned state if a percentage threshold is crossed. See [this repo for a demo](https://github.com/infracost/gh-actions-demo).
 
 This Action uses the latest version of Infracost by default as we regularly add support for more cloud resources. If you run into any issues, please join our [community Slack channel](https://www.infracost.io/community-chat); we'd be happy to guide you through it.
 
@@ -54,11 +54,11 @@ For all other users, the following is needed so Terraform can run `init`:
 
 ### `INFRACOST_TERRAFORM_BINARY`
 
-**Optional** Used to change the path to the terraform binary or version, see [here](https://www.infracost.io/docs/environment_variables/#cicd-integrations) for the available options.
+**Optional** Used to change the path to the `terraform` binary or version, see [here](https://www.infracost.io/docs/environment_variables/#cicd-integrations) for the available options.
 
 ### `GIT_SSH_KEY`
 
-**Optional** If you're using terraform modules from private Git repositories you can set this environment variable to your private Git SSH key so terraform can access your module.
+**Optional** If you're using Terraform modules from private Git repositories you can set this environment variable to your private Git SSH key so Terraform can access your module.
 
 ### `GITHUB_API_URL`
 
@@ -78,7 +78,7 @@ The past total monthly cost estimate.
 
 1. [Add repo secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository) for `INFRACOST_API_KEY` and any other required credentials to your GitHub repo (e.g. `AWS_ACCESS_KEY_ID`).
 
-2. Create a new file in `.github/workflows/infracost.yml` in your repo with the following content. Use the Inputs and Environment Variables section above to decide which `env` and `with` options work for your Terraform setup. The following example uses `terraform_dir` and `terraform_plan_flags` so it would be the equivalent of running `terraform -var-file=myvars.tfvars` inside the directory with the terraform code. The GitHub Actions [docs](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#on) describe other options for `on`, though `pull_request` is probably what you want.
+2. Create a new file in `.github/workflows/infracost.yml` in your repo with the following content. Use the Inputs and Environment Variables section above to decide which `env` and `with` options work for your Terraform setup. The following example uses `terraform_dir` and `terraform_plan_flags` so it would be the equivalent of running `terraform -var-file=myvars.tfvars` inside the directory with the Terraform code. The GitHub Actions [docs](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#on) describe other options for `on`, though `pull_request` is probably what you want.
 
   ```
   on:
