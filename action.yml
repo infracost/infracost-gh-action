@@ -5,47 +5,38 @@ branding:
   icon: trending-up
   color: yellow
 inputs:
-  terraform_json_file:
-    description: Path to Terraform plan JSON file.
-    required: false
-  terraform_plan_file:
-    description: Path to Terraform plan file relative to 'terraform_dir'. Requires 'terraform_dir' to be set.
-    required: false
-  terraform_use_state:
-    description: Use Terraform state instead of generating a plan (default is false).
-    required: false
-    default: false
-  terraform_dir:
-    description: Path to the Terraform code directory (default is current working directory).
+  path:
+    description: Path to the Terraform directory or JSON/plan file. Either `path` or `config_file` is required.
     required: false
   terraform_plan_flags:
-    description: Flags to pass to the 'terraform plan' command.
+    description: Flags to pass to the 'terraform plan' command, e.g. `"-var-file=my.tfvars -var-file=other.tfvars"`. Applicable when path is a Terraform directory.
+    required: false
+  terraform_workspace:
+    description: The Terraform workspace to use. Applicable when path is a Terraform directory. Only set this for multi-workspace deployments, otherwise it might result in the Terraform error "workspaces not supported".
     required: false 
+  usage_file:
+    description: Path to Infracost usage file (https://www.infracost.io/docs/usage_based_resources) that specifies values for usage-based resources, see https://github.com/infracost/infracost/blob/master/infracost-usage-example.yml for the available options.
+    required: false
+  config_file:
+    description: If your repo has multiple Terraform projects or workspaces, define them in a config file (https://www.infracost.io/docs/config_file/) and set this input to its path. Their results will be combined into the same diff output. Cannot be used with path, terraform_plan_flags or usage_file inputs. 
+    required: false
   percentage_threshold:
-    description: The absolute percentage threshold that triggers a pull request comment with the diff. Defaults to 0, meaning that a comment is posted if the cost estimate changes. For example, set to 5 to post a comment if the cost estimate changes by plus or minus 5%.
+    description: The absolute percentage threshold that triggers a pull request comment with the diff. Defaults to 0, meaning that a comment is posted if the cost estimate changes. For example, set to 5 to post a comment if the cost estimate changes by more than plus or minus 5%.
     required: false
     default: 0
-  pricing_api_endpoint:
-    description: Specify an alternate Cloud Pricing API URL (default is https://pricing.api.infracost.io).
-    required: false
-  usage_file:
-    description: Path to Infracost usage file that specifies values for usage-based resources.
-    required: false
 outputs:
-  master_monthly_cost:
-    description: The master branch's monthly cost estimate.
-  pull_request_monthly_cost:
-    description: The pull request's monthly cost estimate.
+  total_monthly_cost:
+    description: The new total monthly cost estimate.
+  past_total_monthly_cost:
+    description: The past total monthly cost estimate.
 runs:
   using: docker
   image: docker://infracost/infracost:latest # Use a specific version instead of latest if locking is preferred
   args:
-    - ${{ inputs.terraform_json_file }}
-    - ${{ inputs.terraform_plan_file }}
-    - ${{ inputs.terraform_use_state }}
-    - ${{ inputs.terraform_dir }}
+    - ${{ inputs.path }}
     - ${{ inputs.terraform_plan_flags }}
-    - ${{ inputs.percentage_threshold }}
-    - ${{ inputs.pricing_api_endpoint }}
+    - ${{ inputs.terraform_workspace }}
     - ${{ inputs.usage_file }}
+    - ${{ inputs.config_file }}
+    - ${{ inputs.percentage_threshold }}
 
