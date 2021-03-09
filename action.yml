@@ -6,22 +6,22 @@ branding:
   color: yellow
 inputs:
   path:
-    description: Path to the Terraform directory or JSON/plan file.
+    description: Path to the Terraform directory or JSON/plan file. Either `path` or `config_file` is required.
     required: false
   terraform_plan_flags:
-    description: Flags to pass to the 'terraform plan' command. Applicable when path is a Terraform directory.
+    description: Flags to pass to the 'terraform plan' command, e.g. `"-var-file=my.tfvars -var-file=other.tfvars"`. Applicable when path is a Terraform directory.
     required: false
   terraform_workspace:
-    description: The Terraform workspace to use. Applicable when path is a Terraform directory.
+    description: The Terraform workspace to use. Applicable when path is a Terraform directory. Only set this for multi-workspace deployments, otherwise it might result in the Terraform error "workspaces not supported".
     required: false 
   usage_file:
-    description: Path to Infracost usage file that specifies values for usage-based resources.
+    description: Path to Infracost usage file (https://www.infracost.io/docs/usage_based_resources) that specifies values for usage-based resources, see https://github.com/infracost/infracost/blob/master/infracost-usage-example.yml for the available options.
     required: false
   config_file:
-    description: Path to the Infracost config file. Cannot be used with path, terraform* or usage-file flags.
+    description: If your repo has multiple Terraform projects or workspaces, define them in a config file (https://www.infracost.io/docs/config_file/) and set this input to its path. Their results will be combined into the same diff output. Cannot be used with path, terraform_plan_flags or usage_file inputs. 
     required: false
   percentage_threshold:
-    description: The absolute percentage threshold that triggers a pull request comment with the diff. Defaults to 0, meaning that a comment is posted if the cost estimate changes. For example, set to 5 to post a comment if the cost estimate changes by plus or minus 5%.
+    description: The absolute percentage threshold that triggers a pull request comment with the diff. Defaults to 0, meaning that a comment is posted if the cost estimate changes. For example, set to 5 to post a comment if the cost estimate changes by more than plus or minus 5%.
     required: false
     default: 0
 outputs:
