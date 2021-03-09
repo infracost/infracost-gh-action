@@ -1,10 +1,10 @@
 # Infracost GitHub Action
 
-This GitHub Action runs [Infracost](https://infracost.io) against pull requests whenever Terraform files change. It automatically adds a pull request comment showing the cost estimate difference for the planned state if a percentage threshold is crossed. See [this repo for a demo](https://github.com/infracost/gh-actions-demo).
+This GitHub Action runs [Infracost](https://infracost.io) against pull requests whenever Terraform files change. It automatically adds a pull request comment showing the cost estimate difference for the planned state if a configurable percentage threshold is crossed. See [this repo for a demo](https://github.com/infracost/gh-actions-demo).
 
 The Action uses the latest version of Infracost by default as we regularly add support for more cloud resources. If you run into any issues, please join our [community Slack channel](https://www.infracost.io/community-chat); we'd be happy to guide you through it.
 
-As mentioned in the [FAQ](https://www.infracost.io/docs/faq), you can run Infracost in your Terraform directories without worrying about security or privacy issues as no cloud credentials, secrets, tags or Terraform resource identifiers are sent to the open-source [Cloud Pricing API](https://github.com/infracost/cloud-pricing-api). Infracost does not make any changes to your Terraform state or cloud resources.
+As mentioned in the [FAQ](https://www.infracost.io/docs/faq), **no** cloud credentials, secrets, tags or resource identifiers are sent to the Cloud Pricing API. That API does not become aware of your cloud spend; it simply returns cloud prices to the CLI so calculations can be done on your machine. Infracost does not make any changes to your Terraform state or cloud resources.
 
 <img src="screenshot.png" width=557 alt="Example screenshot" />
 
@@ -24,7 +24,7 @@ As mentioned in the [FAQ](https://www.infracost.io/docs/faq), you can run Infrac
 
 ### `config_file`
 
-**Optional** Path to the Infracost [config file](https://www.infracost.io/docs/config_file/). Cannot be used with path, terraform* or usage-file flags. See [this example file](https://github.com/infracost/infracost/blob/master/infracost-example.yml) for the available options.
+**Optional** If your repo has **multiple Terraform projects or workspaces**, define them in a [config file](https://www.infracost.io/docs/config_file/) and set this input to its path. Their results will be combined into the same diff output. Cannot be used with path, terraform_plan_flags or usage_file inputs. 
 
 ### `percentage_threshold`
 
@@ -32,9 +32,9 @@ As mentioned in the [FAQ](https://www.infracost.io/docs/faq), you can run Infrac
 
 ## Environment variables
 
-The following environment variables are required. Other supported environment variables are described in the [Infracost docs](https://www.infracost.io/docs/environment_variables). [Repo secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository) can be used for sensitive environment values.
+This section describes the required environment variables. Other supported environment variables are described in the [this page](https://www.infracost.io/docs/integrations/environment_variables). [Repo secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository) can be used for sensitive environment values.
 
-Terragrunt users should follow [this section](https://www.infracost.io/docs/terragrunt).
+Terragrunt users should also read [this page](https://www.infracost.io/docs/iac_tools/terragrunt). Terraform Cloud/Enterprise users should also read [this page](https://www.infracost.io/docs/iac_tools/terraform_cloud_enterprise).
 
 ### `INFRACOST_API_KEY`
 
@@ -42,11 +42,11 @@ Terragrunt users should follow [this section](https://www.infracost.io/docs/terr
 
 ### `GITHUB_TOKEN`
 
-**Required** GitHub token used to post comments, should be set to `${{ secrets.GITHUB_TOKEN }}` to use the default GitHub token available to actions (see example in the Usage section).
+**Required** GitHub token used to post comments, should be set to `${{ secrets.GITHUB_TOKEN }}` to use the default GitHub token available to actions (see example in the [Usage section](#usage)).
 
 ### Cloud credentials
 
-**Required** You do not need to set cloud credentials if you use Terraform Cloud/Enterprise's remote execution mode, instead you should follow [this section](https://www.infracost.io/docs/terraform_cloud_enterprise).
+**Required** You do not need to set cloud credentials if you use Terraform Cloud/Enterprise's remote execution mode, instead you should follow [this page](https://www.infracost.io/docs/iac_tools/terraform_cloud_enterprise).
 
 For all other users, the following is needed so Terraform can run `init`:
 - AWS users should set `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
@@ -54,7 +54,7 @@ For all other users, the following is needed so Terraform can run `init`:
 
 ### `INFRACOST_TERRAFORM_BINARY`
 
-**Optional** Used to change the path to the `terraform` binary or version, see [here](https://www.infracost.io/docs/environment_variables/#cicd-integrations) for the available options.
+**Optional** Used to change the path to the `terraform` binary or version, see [this page](https://www.infracost.io/docs/integrations/environment_variables/#cicd-integrations) for the available options.
 
 ### `GIT_SSH_KEY`
 
@@ -102,7 +102,7 @@ The past total monthly cost estimate.
           terraform_plan_flags: -var-file=my.tfvars
   ```
 
-3. Send a new pull request to change something in Terraform that costs money; a comment should be posted on the pull request. Check the GitHub Actions logs if there are issues.
+3. Send a new pull request to change something in Terraform that costs money; a comment should be posted on the pull request. Check the GitHub Actions logs and [this page](https://www.infracost.io/docs/integrations/cicd#cicd-troubleshooting) if there are issues.
 
 ## Contributing
 
