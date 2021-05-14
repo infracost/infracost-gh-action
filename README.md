@@ -8,6 +8,102 @@ As mentioned in the [FAQ](https://www.infracost.io/docs/faq), **no** cloud crede
 
 <img src="screenshot.png" width=557 alt="Example screenshot" />
 
+## Usage methods
+
+There are two methods of using the Infracost GitHub Action:
+
+1. **Terraform directory**, this is the simplest method. However, we recommend the second method if you run into issues relating to `terraform init` or `terraform plan`.
+
+2. **Terraform plan JSON**, this uses the [setup-terraform](https://github.com/hashicorp/setup-terraform) GitHub Action to first generate a plan JSON file then passes that to the Infracost GitHub Action using the `path` input.
+
+### 1. Terraform directory
+
+1. [Add repo secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository) for `INFRACOST_API_KEY` and any other required credentials to your GitHub repo (e.g. `AWS_ACCESS_KEY_ID`).
+
+2. Create a new file in `.github/workflows/infracost.yml` in your repo with the following content. Use the [Inputs](#inputs) and [Environment Variables](#environment-variables) section below to decide which `env` and `with` options work for your Terraform setup. The following example uses `path` to specify the location of the Terraform directory and `terraform_plan_flags` to specify the variables file to use when running `terraform plan`. The GitHub Actions [docs](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#on) describe other options for `on`, though `pull_request` is probably what you want.
+
+  ```yml
+  on:
+    pull_request:
+      paths:
+      - '**.tf'
+      - '**.tfvars'
+      - '**.tfvars.json'
+  jobs:
+    infracost:
+      runs-on: ubuntu-latest
+      name: Show infracost diff
+      steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Run infracost diff
+        uses: infracost/infracost-gh-action@master # Use a specific version instead of master if locking is preferred
+        env:
+          INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Do not change
+          # See the cloud credentials section for the options
+        with:
+          entrypoint: /scripts/ci/diff.sh # Do not change
+          path: path/to/code
+          terraform_plan_flags: -var-file=my.tfvars
+  ```
+
+3. Send a new pull request to change something in Terraform that costs money; a comment should be posted on the pull request. Check the GitHub Actions logs and [this page](https://www.infracost.io/docs/integrations/cicd#cicd-troubleshooting) if there are issues.
+
+### 2. Terraform plan JSON
+
+1. [Add repo secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository) for `INFRACOST_API_KEY`.
+
+2. Create a new file in `.github/workflows/infracost.yml` in your repo with the following content. Update `path/to/code` to point to your Terraform directory. Also customize the Terraform init/plan steps, and use the [Inputs](#inputs) and [Environment Variables](#environment-variables) section below as required.
+
+  ```yml
+  on:
+    pull_request:
+      paths:
+      - '**.tf'
+      - '**.tfvars'
+      - '**.tfvars.json'
+  jobs:
+    infracost:
+      runs-on: ubuntu-latest
+      name: Show infracost diff
+      steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: "Install terraform"
+        uses: hashicorp/setup-terraform@v1
+
+      - name: "Terraform init"
+        id: init
+        run: terraform init
+        working-directory: path/to/code
+
+      - name: "Terraform plan"
+        id: plan
+        run: terraform plan -out plan.tfplan
+        working-directory: path/to/code
+
+      - name: "Terraform show"
+        id: show
+        run: terraform show -json plan.tfplan
+        working-directory: path/to/code
+        
+      - name: "Save Plan JSON"
+        run: echo '${{ steps.show.outputs.stdout }}' > plan.json # Do not change
+
+      - name: Run infracost diff
+        uses: infracost/infracost-gh-action@master # Use a specific version instead of master if locking is preferred
+        env:
+          INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          entrypoint: /scripts/ci/diff.sh # Do not change
+          path: plan.json # Do not change
+  ```
+
+3. Send a new pull request to change something in Terraform that costs money; a comment should be posted on the pull request. Check the GitHub Actions logs and [this page](https://www.infracost.io/docs/integrations/cicd#cicd-troubleshooting) if there are issues.
+
 ## Inputs
 
 ### `path`
@@ -76,40 +172,6 @@ The new total monthly cost estimate.
 ### `past_total_monthly_cost`
 
 The past total monthly cost estimate.
-
-## Usage
-
-1. [Add repo secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository) for `INFRACOST_API_KEY` and any other required credentials to your GitHub repo (e.g. `AWS_ACCESS_KEY_ID`).
-
-2. Create a new file in `.github/workflows/infracost.yml` in your repo with the following content. Use the Inputs and Environment Variables section above to decide which `env` and `with` options work for your Terraform setup. The following example uses `path` to specify the location of the Terraform directory and `terraform_plan_flags` to specify the variables file to use when running `terraform plan`. The GitHub Actions [docs](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#on) describe other options for `on`, though `pull_request` is probably what you want.
-
-  ```
-  on:
-    pull_request:
-      paths:
-      - '**.tf'
-      - '**.tfvars'
-      - '**.tfvars.json'
-  jobs:
-    infracost:
-      runs-on: ubuntu-latest
-      name: Show infracost diff
-      steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-      - name: Run infracost diff
-        uses: infracost/infracost-gh-action@master # Use a specific version instead of master if locking is preferred
-        env:
-          INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Do not change
-          # See the cloud credentials section for the options
-        with:
-          entrypoint: /scripts/ci/diff.sh # Do not change
-          path: path/to/code
-          terraform_plan_flags: -var-file=my.tfvars
-  ```
-
-3. Send a new pull request to change something in Terraform that costs money; a comment should be posted on the pull request. Check the GitHub Actions logs and [this page](https://www.infracost.io/docs/integrations/cicd#cicd-troubleshooting) if there are issues.
 
 ## Contributing
 
