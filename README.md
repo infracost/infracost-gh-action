@@ -4,11 +4,21 @@ This GitHub Action runs [Infracost](https://infracost.io) against pull requests 
 
 The Action uses the latest version of Infracost by default as we regularly add support for more cloud resources. If you run into any issues, please join our [community Slack channel](https://www.infracost.io/community-chat); we'd be happy to guide you through it.
 
-As mentioned in the [FAQ](https://www.infracost.io/docs/faq), **no** cloud credentials, secrets, tags or resource identifiers are sent to the Cloud Pricing API. That API does not become aware of your cloud spend; it simply returns cloud prices to the CLI so calculations can be done on your machine. Infracost does not make any changes to your Terraform state or cloud resources.
+As mentioned in our [FAQ](https://infracost.io/docs/faq), no cloud credentials or secrets are sent to the Cloud Pricing API. Infracost does not make any changes to your Terraform state or cloud resources.
 
 <img src="screenshot.png" width=557 alt="Example screenshot" />
 
-## Usage methods
+## Table of Contents
+
+* [Usage methods](#usage-methods)
+  * [Terraform directory](#1-terraform-directory)
+  * [Terraform plan JSON](#2-terraform-plan-json)
+* [Inputs](#inputs)
+* [Environment variables](#environment-variables)
+* [Outputs](#outputs)
+* [Contributing](#contributing)
+
+# Usage methods
 
 There are two methods of using the Infracost GitHub Action:
 
@@ -104,29 +114,29 @@ There are two methods of using the Infracost GitHub Action:
 
 3. Send a new pull request to change something in Terraform that costs money; a comment should be posted on the pull request. Check the GitHub Actions logs and [this page](https://www.infracost.io/docs/integrations/cicd#cicd-troubleshooting) if there are issues.
 
-## Inputs
+# Inputs
 
-### `path`
+## `path`
 
 **Optional** Path to the Terraform directory or JSON/plan file. Either `path` or `config_file` is required.
 
-### `terraform_plan_flags`
+## `terraform_plan_flags`
 
 **Optional** Flags to pass to the 'terraform plan' command, e.g. `"-var-file=my.tfvars -var-file=other.tfvars"`. Applicable when path is a Terraform directory.
 
-### `terraform_workspace`
+## `terraform_workspace`
 
 **Optional** The Terraform workspace to use. Applicable when path is a Terraform directory. Only set this for multi-workspace deployments, otherwise it might result in the Terraform error "workspaces not supported".
 
-### `usage_file`
+## `usage_file`
 
 **Optional** Path to Infracost [usage file](https://www.infracost.io/docs/usage_based_resources#infracost-usage-file) that specifies values for usage-based resources, see [this example file](https://github.com/infracost/infracost/blob/master/infracost-usage-example.yml) for the available options.
 
-### `config_file`
+## `config_file`
 
 **Optional** If your repo has **multiple Terraform projects or workspaces**, define them in a [config file](https://www.infracost.io/docs/config_file/) and set this input to its path. Their results will be combined into the same diff output. Cannot be used with path, terraform_plan_flags or usage_file inputs. 
 
-### `post_condition`
+## `post_condition`
 
 **Optional** A JSON string describing the condition that triggers pull request comments, can be one of these:
 - `'{"has_diff": true}'`: only post a comment if there is a diff. This is the default behavior.
@@ -135,41 +145,42 @@ There are two methods of using the Infracost GitHub Action:
 
 ## Environment variables
 
-This section describes the required environment variables. Other supported environment variables are described in the [this page](https://www.infracost.io/docs/integrations/environment_variables). [Repo secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository) can be used for sensitive environment values.
+This section describes the main environment variables that can be used in this GitHub Action. Other supported environment variables are described in the [this page](https://www.infracost.io/docs/integrations/environment_variables). [Repo secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository) can be used for sensitive environment values.
 
 Terragrunt users should also read [this page](https://www.infracost.io/docs/iac_tools/terragrunt). Terraform Cloud/Enterprise users should also read [this page](https://www.infracost.io/docs/iac_tools/terraform_cloud_enterprise).
 
-### `INFRACOST_API_KEY`
+## `INFRACOST_API_KEY`
 
-**Required** To get an API key [download Infracost](https://www.infracost.io/docs/#installation) and run `infracost register`.
+**Required** To get an API key [download Infracost](https://www.infracost.io/docs/#quick-start) and run `infracost register`.
 
-### `GITHUB_TOKEN`
+## `GITHUB_TOKEN`
 
 **Required** GitHub token used to post comments, should be set to `${{ secrets.GITHUB_TOKEN }}` to use the default GitHub token available to actions (see example in the [Usage section](#usage)).
 
-### Cloud credentials
+## Cloud credentials
 
 **Required** You do not need to set cloud credentials if you use Terraform Cloud/Enterprise's remote execution mode, instead you should follow [this page](https://www.infracost.io/docs/iac_tools/terraform_cloud_enterprise).
 
 For all other users, the following is needed so Terraform can run `init`:
-- AWS users should set `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
-- GCP users should set `GOOGLE_CREDENTIALS` or read [this section](https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/provider_reference#full-reference) of the Terraform docs for other options.
+- Azure users should read [this section](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/service_principal_client_secret) to see which environment variables work for their use-case.
+- AWS users should set `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`, or read [this section](https://registry.terraform.io/providers/hashicorp/aws/latest/docs#environment-variables) of the Terraform docs for other options.
+- GCP users should set `GOOGLE_CREDENTIALS`, or read [this section](https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/provider_reference#full-reference) of the Terraform docs for other options.
 
-### `INFRACOST_TERRAFORM_BINARY`
+## `INFRACOST_TERRAFORM_BINARY`
 
 **Optional** Used to change the path to the `terraform` binary or version, see [this page](https://www.infracost.io/docs/integrations/environment_variables/#cicd-integrations) for the available options.
 
-### `GIT_SSH_KEY`
+## `GIT_SSH_KEY`
 
 **Optional** If you're using Terraform modules from private Git repositories you can set this environment variable to your private Git SSH key so Terraform can access your module.
 
-## Outputs
+# Outputs
 
-### `total_monthly_cost`
+## `total_monthly_cost`
 
 The new total monthly cost estimate.
 
-### `past_total_monthly_cost`
+## `past_total_monthly_cost`
 
 The past total monthly cost estimate.
 
