@@ -31,6 +31,9 @@ inputs:
       - `'{"percentage_threshold": 0}'`: absolute percentage threshold that triggers a comment. For example, set to 1 to post a comment if the cost estimate changes by more than plus or minus 1%.
     required: false
     default: '{"has_diff": true}'
+  show_skipped:
+    description: Show unsupported resources, some of which might be free, at the bottom of the Infracost output.
+    required: false
 outputs:
   total_monthly_cost:
     description: The new total monthly cost estimate.
@@ -47,3 +50,4 @@ runs:
     - ${{ inputs.config_file }}
     - ${{ inputs.percentage_threshold }}
     - ${{ inputs.post_condition }}
+    - ${{ inputs.show_skipped }}

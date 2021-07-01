@@ -136,6 +136,10 @@ There are two methods of using the Infracost GitHub Action:
 
 **Optional** If your repo has **multiple Terraform projects or workspaces**, define them in a [config file](https://www.infracost.io/docs/config_file/) and set this input to its path. Their results will be combined into the same diff output. Cannot be used with path, terraform_plan_flags or usage_file inputs. 
 
+## `show_skipped`
+
+**Optional** Show unsupported resources, some of which might be free, at the bottom of the Infracost output (default is false).
+
 ## `post_condition`
 
 **Optional** A JSON string describing the condition that triggers pull request comments, can be one of these:
@@ -173,6 +177,10 @@ For all other users, the following is needed so Terraform can run `init`:
 ## `GIT_SSH_KEY`
 
 **Optional** If you're using Terraform modules from private Git repositories you can set this environment variable to your private Git SSH key so Terraform can access your module.
+
+## `SLACK_WEBHOOK_URL`
+
+**Optional** Set this to also post the pull request comment to a [Slack Webhook](https://slack.com/intl/en-tr/help/articles/115005265063-Incoming-webhooks-for-Slack), which should post it in the corresponding Slack channel.
 
 # Outputs
 
