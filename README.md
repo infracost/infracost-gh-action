@@ -20,7 +20,7 @@ As mentioned in our [FAQ](https://infracost.io/docs/faq), no cloud credentials o
 
 # Usage methods
 
-There are two methods of using the Infracost GitHub Action:
+Assuming you have [downloaded Infracost](https://www.infracost.io/docs/#quick-start) and ran `infracost register` to get an API key, there are two methods of using the Infracost GitHub Action:
 
 1. **Terraform directory**, this is the simplest method. However, we recommend the second method if you run into issues relating to `terraform init` or `terraform plan`.
 
