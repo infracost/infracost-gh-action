@@ -53,7 +53,6 @@ Assuming you have [downloaded Infracost](https://www.infracost.io/docs/#quick-st
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Do not change
           # See the cloud credentials section for the options
         with:
-          entrypoint: /scripts/ci/diff.sh # Do not change
           path: path/to/code
           terraform_plan_flags: -var-file=my.tfvars
   ```
@@ -108,8 +107,7 @@ Assuming you have [downloaded Infracost](https://www.infracost.io/docs/#quick-st
           INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          entrypoint: /scripts/ci/diff.sh # Do not change
-          path: plan.json # Do not change
+          path: plan.json # Do not change as this file is generated above
   ```
 
 3. Send a new pull request to change something in Terraform that costs money; a comment should be posted on the pull request. Check the GitHub Actions logs and [this page](https://www.infracost.io/docs/integrations/cicd#cicd-troubleshooting) if there are issues.
