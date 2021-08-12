@@ -42,6 +42,7 @@ outputs:
 runs:
   using: docker
   image: docker://infracost/infracost:latest # Use a specific version instead of latest if locking is preferred
+  entrypoint: /scripts/ci/diff.sh # Do not change, this script lives in the Docker image and runs the GitHub Action logic
   args:
     - ${{ inputs.path }}
     - ${{ inputs.terraform_plan_flags }}
