@@ -168,6 +168,56 @@ For all other users, the following is needed so Terraform can run `init`:
 - AWS users should set `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`, or read [this section](https://registry.terraform.io/providers/hashicorp/aws/latest/docs#environment-variables) of the Terraform docs for other options.
 - GCP users should set `GOOGLE_CREDENTIALS`, or read [this section](https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/provider_reference#full-reference) of the Terraform docs for other options.
 
+### Multiple AWS credentials
+
+If your Terraform project uses multiple AWS credentials you can create separate secrets for the different AWS credentials and configure it using AWS profiles in your GitHub action as below, making sure to pass the `AWS_SHARED_CREDENTIALS_FILE` environment variable to the Infracost step.
+
+```yml
+on:
+  pull_request:
+    paths:
+    - '**.tf'
+    - '**.tfvars'
+    - '**.tfvars.json'
+jobs:
+  infracost:
+    runs-on: ubuntu-latest
+    name: Show infracost diff
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    - name: Add profile credentials to ~/.aws/credentials
+      env:
+        DEV_AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
+        DEV_AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
+        PROD_AWS_ACCESS_KEY_ID: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }}
+        PROD_AWS_SECRET_ACCESS_KEY: ${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}
+      run: |
+        export AWS_SHARED_CREDENTIALS_FILE=.aws/credentials
+        aws configure set aws_access_key_id $DEV_AWS_ACCESS_KEY_ID --profile dev-profile
+        aws configure set aws_secret_access_key $DEV_AWS_SECRET_ACCESS_KEY --profile dev-profile
+        aws configure set aws_access_key_id $PROD_AWS_ACCESS_KEY_ID --profile prod-profile
+        aws configure set aws_secret_access_key $PROD_AWS_SECRET_ACCESS_KEY --profile prod-profile
+
+    - name: Run infracost diff
+      uses: infracost/infracost-gh-action@master
+      env:
+        AWS_SHARED_CREDENTIALS_FILE: /github/workspace/.aws/credentials
+        INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        config_file: infracost.yml
+```
+
+In your Terraform code you can use different profiles by specifying the `profile` attribute of the AWS provider like below
+
+```hcl
+provider "aws" {
+  profile = "dev-profile"
+}
+```
+
 ## `INFRACOST_TERRAFORM_BINARY`
 
 **Optional** Used to change the path to the `terraform` binary or version, see [this page](https://www.infracost.io/docs/integrations/environment_variables/#cicd-integrations) for the available options.
