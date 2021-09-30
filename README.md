@@ -145,6 +145,24 @@ Assuming you have [downloaded Infracost](https://www.infracost.io/docs/#quick-st
 - `'{"always": true}'`: always post a comment.
 - `'{"percentage_threshold": 0}'`: absolute percentage threshold that triggers a comment. For example, set to 1 to post a comment if the cost estimate changes by more than plus or minus 1%.
 
+**Probably the desired behavior** A JSON string describing the condition that triggers pull request comments, can be one of these:
+- `'{"update": true}'`: "when a commit results in a change in costs vs earlier commits, create or update a pr comment."  PR followers will only be notified on the comment create, and the comment will stay at the same location in the pr comment history.
+- `'{"replace": true}'`: "when a commit results in a change in costs vs earlier commits, delete any existing pr comments and create a new one."  PR followers will only be notified on each comment create, and the new comment will be at the bottom of te comment history.
+- `'{"always": true}'`: "when a commit results in a change in costs vs earlier commits, minimize any existing pr comments and create a new one."  PR followers will only be notified on each comment create, and the new comment will be at the bottom of te comment history.
+- `'{"percentage_threshold": 0}'`: "Modifies the above behaviors so that no commits are made until a commit on the pr has a cot change absolute percentage threshold that triggers a comment. For example, set to 1 to post a comment if the cost estimate changes by more than plus or minus 1%."  A commit comment is put on every commit with a terraform change that results in a cost diff > x% (regardless of whether or not  there is a tf change in the particular commit )" Once you have a commit that passes the threshold, the update/replace/new behavior kicks in for the lifetime of the pr.
+
+**New behavior** A JSON string describing the condition that triggers pull request comments, can be one of these:
+- `'{"update": true}'`: "when a commit results in a change in costs vs earlier commits, create or update a pr comment."  PR followers will only be notified on the comment create, and the comment will stay at the same location in the pr comment history.
+- `'{"has_diff": true}'`: "only post a comment if there is a diff. This is the default behavior." A commit comment is put on the first commit with a terraform change, and on every subsequent commit (regardless of whether or not there is a tf change in the particular commit).
+- `'{"always": true}'`: "always post a comment."  A commit comment is put on every commit.
+- `'{"percentage_threshold": 0}'`: "absolute percentage threshold that triggers a comment. For example, set to 1 to post a comment if the cost estimate changes by more than plus or minus 1%."  A commit comment is put on every commit with a terraform change that results in a cost diff > x% (regardless of whether or not  there is a tf change in the particular commit )
+
+**Old behavior** A JSON string describing the condition that triggers pull request comments, can be one of these:
+- `'{"has_diff": true}'`: "only post a comment if there is a diff. This is the default behavior." A commit comment is put on the first commit with a terraform change, and on every subsequent commit (regardless of whether or not there is a tf change in the particular commit).
+- `'{"always": true}'`: "always post a comment."  A commit comment is put on every commit.  
+- `'{"percentage_threshold": 0}'`: "absolute percentage threshold that triggers a comment. For example, set to 1 to post a comment if the cost estimate changes by more than plus or minus 1%."  A commit comment is put on every commit with a terraform change that results in a cost diff > x% (regardless of whether or not  there is a tf change in the particular commit ) 
+
+
 ## Environment variables
 
 This section describes the main environment variables that can be used in this GitHub Action. Other supported environment variables are described in the [this page](https://www.infracost.io/docs/integrations/environment_variables). [Repo secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository) can be used for sensitive environment values.
