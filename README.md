@@ -141,9 +141,12 @@ Assuming you have [downloaded Infracost](https://www.infracost.io/docs/#quick-st
 ## `post_condition`
 
 **Optional** A JSON string describing the condition that triggers pull request comments, can be one of these:
-- `'{"has_diff": true}'`: only post a comment if there is a diff. This is the default behavior.
-- `'{"always": true}'`: always post a comment.
-- `'{"percentage_threshold": 0}'`: absolute percentage threshold that triggers a comment. For example, set to 1 to post a comment if the cost estimate changes by more than plus or minus 1%.
+- `'{"update": true}'`: we suggest you start with this option. When a commit results in a change in cost estimates vs earlier commits, the integration will create **or update** a PR comment (not commit comments). The GitHub comments UI can be used to see when/what was changed in the comment. PR followers will only be notified on the comment create (not update), and the comment will stay at the same location in the comment history. This is initially supported for GitHub, please let us know if you'd like to see this for GitLab and BitBucket.
+- `'{"has_diff": true}'`: a commit comment is put on the first commit with a Terraform change (i.e. there is a diff) and on every subsequent commit (regardless of whether or not there is a Terraform change in the particular commit). This is the default behavior but we think `update` might be a better default so we might change this in the future.
+- `'{"always": true}'`: a commit comment is put on every commit.
+- `'{"percentage_threshold": 0}'`: absolute percentage threshold that triggers a comment. For example, set to 1 to post a comment if the cost estimate changes by more than plus or minus 1%. A commit comment is put on every commit with a Terraform change that results in a cost diff that is bigger than the threshold.
+
+Please use [this GitHub discussion](https://github.com/infracost/infracost/discussions/1016) to tell us what you'd like to see in PR comments.
 
 ## Environment variables
 
