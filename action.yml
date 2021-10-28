@@ -35,6 +35,9 @@ inputs:
   show_skipped:
     description: Show unsupported resources, some of which might be free, at the bottom of the Infracost output.
     required: false
+  sync_usage_file:
+    description: Sync usage-file with missing resources. This requires the usage_file input to be set.
+    required: false
 outputs:
   total_monthly_cost:
     description: The new total monthly cost estimate.
@@ -53,3 +56,4 @@ runs:
     - ${{ inputs.percentage_threshold }}
     - ${{ inputs.post_condition }}
     - ${{ inputs.show_skipped }}
+    - ${{ inputs.sync_usage_file }}

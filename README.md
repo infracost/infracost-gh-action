@@ -148,6 +148,10 @@ Assuming you have [downloaded Infracost](https://www.infracost.io/docs/#quick-st
 
 Please use [this GitHub discussion](https://github.com/infracost/infracost/discussions/1016) to tell us what you'd like to see in PR comments.
 
+## `sync_usage_file` (experimental)
+
+**Optional**  If set to `true` this will create or update the usage file with missing resources, either using zero values or pulling data from AWS CloudWatch. For more information see the [Infracost docs here](https://www.infracost.io/docs/usage_based_resources#1-generate-usage-file). You must also specify the `usage_file` input if this is set to `true`.
+
 ## Environment variables
 
 This section describes the main environment variables that can be used in this GitHub Action. Other supported environment variables are described in the [this page](https://www.infracost.io/docs/integrations/environment_variables). [Repo secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository) can be used for sensitive environment values.
