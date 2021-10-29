@@ -23,6 +23,9 @@ inputs:
   percentage_threshold:
     description: (percentage_threshold is deprecated, use post_condition instead) The absolute percentage threshold that triggers a pull request comment with the diff. Defaults to 0, meaning that a comment is posted if the cost estimate changes. For example, set to 5 to post a comment if the cost estimate changes by more than plus or minus 5%.
     required: false
+  post_header:
+    description: An optional header string for pull request comments.
+    required: false
   post_condition:
     description: |
       A JSON string describing the condition that triggers pull request comments, can be one of these:
@@ -54,6 +57,7 @@ runs:
     - ${{ inputs.usage_file }}
     - ${{ inputs.config_file }}
     - ${{ inputs.percentage_threshold }}
+    - ${{ inputs.post_header }}
     - ${{ inputs.post_condition }}
     - ${{ inputs.show_skipped }}
     - ${{ inputs.sync_usage_file }}
