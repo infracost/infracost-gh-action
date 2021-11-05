@@ -26,7 +26,7 @@ Assuming you have [downloaded Infracost](https://www.infracost.io/docs/#quick-st
 
 2. **Terraform plan JSON**, this uses the [setup-terraform](https://github.com/hashicorp/setup-terraform) GitHub Action to first generate a plan JSON file then passes that to the Infracost GitHub Action using the `path` input.
 
-### 1. Terraform directory
+## 1. Terraform directory
 
 1. [Add repo secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository) for `INFRACOST_API_KEY` and any other required credentials to your GitHub repo (e.g. `AWS_ACCESS_KEY_ID`).
 
@@ -59,7 +59,7 @@ Assuming you have [downloaded Infracost](https://www.infracost.io/docs/#quick-st
 
 3. Send a new pull request to change something in Terraform that costs money; a comment should be posted on the pull request. Check the GitHub Actions logs and [this page](https://www.infracost.io/docs/integrations/cicd#cicd-troubleshooting) if there are issues.
 
-### 2. Terraform plan JSON
+## 2. Terraform plan JSON
 
 1. [Add repo secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository) for `INFRACOST_API_KEY`.
 
@@ -152,7 +152,7 @@ Please use [this GitHub discussion](https://github.com/infracost/infracost/discu
 
 **Optional**  If set to `true` this will create or update the usage file with missing resources, either using zero values or pulling data from AWS CloudWatch. For more information see the [Infracost docs here](https://www.infracost.io/docs/usage_based_resources#1-generate-usage-file). You must also specify the `usage_file` input if this is set to `true`.
 
-## Environment variables
+# Environment variables
 
 This section describes the main environment variables that can be used in this GitHub Action. Other supported environment variables are described in the [this page](https://www.infracost.io/docs/integrations/environment_variables). [Repo secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository) can be used for sensitive environment values.
 
