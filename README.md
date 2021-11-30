@@ -1,4 +1,14 @@
-# Infracost GitHub Action
+# Old Infracost GitHub Action
+
+## Deprecation notice
+
+👉  Use our new improved GitHub Actions instead! 👈
+
+⚠️ This repo will be deprecated in the next Infracost release. ⚠️
+
+We recommend everyone to use our new [actions](https://github.com/infracost/actions/) repo! Follow our [migration guide](https://www.infracost.io/docs/guides/actions_migration) for more details.
+
+---
 
 This GitHub Action runs [Infracost](https://infracost.io) against pull requests whenever Terraform files change. It automatically adds a pull request comment showing the cost estimate difference for the planned state. See [this repo for a demo](https://github.com/infracost/gh-actions-demo).
 
@@ -136,7 +146,7 @@ Assuming you have [downloaded Infracost](https://www.infracost.io/docs/#quick-st
 
 ## `show_skipped`
 
-**Optional** Show unsupported resources, some of which might be free, at the bottom of the Infracost output (default is false).
+**Optional** Show unsupported resources, at the bottom of the Infracost output (default is false).
 
 ## `post_condition`
 
