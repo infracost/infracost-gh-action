@@ -6,7 +6,7 @@
 
 ⚠️ This repo will be deprecated in the next Infracost release. ⚠️
 
-We recommend everyone to use our new [actions](https://github.com/infracost/actions/) repo! Follow our [migration guide](https://www.infracost.io/docs/guides/actions_migration) for more details.
+We recommend everyone to use [our new actions repo](https://github.com/infracost/actions/)! Follow our [migration guide](https://www.infracost.io/docs/guides/actions_migration) for more details.
 
 ---
 
