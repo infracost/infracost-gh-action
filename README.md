@@ -138,7 +138,7 @@ Assuming you have [downloaded Infracost](https://www.infracost.io/docs/#quick-st
 
 ## `usage_file`
 
-**Optional** Path to Infracost [usage file](https://www.infracost.io/docs/usage_based_resources#infracost-usage-file) that specifies values for usage-based resources, see [this example file](https://github.com/infracost/infracost/blob/master/infracost-usage-example.yml) for the available options.
+**Optional** Path to Infracost [usage file](https://www.infracost.io/docs/features/usage_based_resources#infracost-usage-file) that specifies values for usage-based resources, see [this example file](https://github.com/infracost/infracost/blob/master/infracost-usage-example.yml) for the available options.
 
 ## `config_file`
 
@@ -160,7 +160,7 @@ Please use [this GitHub discussion](https://github.com/infracost/infracost/discu
 
 ## `sync_usage_file` (experimental)
 
-**Optional**  If set to `true` this will create or update the usage file with missing resources, either using zero values or pulling data from AWS CloudWatch. For more information see the [Infracost docs here](https://www.infracost.io/docs/usage_based_resources#1-generate-usage-file). You must also specify the `usage_file` input if this is set to `true`.
+**Optional**  If set to `true` this will create or update the usage file with missing resources, either using zero values or pulling data from AWS CloudWatch. For more information see the [Infracost docs here](https://www.infracost.io/docs/features/usage_based_resources#1-generate-usage-file). You must also specify the `usage_file` input if this is set to `true`.
 
 # Environment variables
 
