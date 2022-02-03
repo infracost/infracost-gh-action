@@ -67,7 +67,7 @@ Assuming you have [downloaded Infracost](https://www.infracost.io/docs/#quick-st
           terraform_plan_flags: -var-file=my.tfvars
   ```
 
-3. Send a new pull request to change something in Terraform that costs money; a comment should be posted on the pull request. Check the GitHub Actions logs and [this page](https://www.infracost.io/docs/integrations/cicd#cicd-troubleshooting) if there are issues.
+3. Send a new pull request to change something in Terraform that costs money; a comment should be posted on the pull request. Check the GitHub Actions logs and [this page](https://www.infracost.io/docs/troubleshooting/) if there are issues.
 
 ## 2. Terraform plan JSON
 
@@ -120,7 +120,7 @@ Assuming you have [downloaded Infracost](https://www.infracost.io/docs/#quick-st
           path: plan.json # Do not change as this file is generated above
   ```
 
-3. Send a new pull request to change something in Terraform that costs money; a comment should be posted on the pull request. Check the GitHub Actions logs and [this page](https://www.infracost.io/docs/integrations/cicd#cicd-troubleshooting) if there are issues.
+3. Send a new pull request to change something in Terraform that costs money; a comment should be posted on the pull request. Check the GitHub Actions logs and [this page](https://www.infracost.io/docs/troubleshooting/) if there are issues.
 
 # Inputs
 
