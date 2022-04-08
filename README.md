@@ -2,11 +2,9 @@
 
 ## Deprecation notice
 
-👉  Use our new improved GitHub Actions instead! 👈
+👉  Use [our new improved actions repo](https://github.com/infracost/actions/) instead! 👈
 
-⚠️ This repo will be deprecated in the next Infracost release. ⚠️
-
-We recommend everyone to use [our new actions repo](https://github.com/infracost/actions/)! Follow our [migration guide](https://www.infracost.io/docs/guides/actions_migration) for more details.
+⚠️ This repo will be deprecated in the next Infracost release. Follow our [migration guide](https://www.infracost.io/docs/guides/actions_migration) for more details. ⚠️
 
 ---
 
